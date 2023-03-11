@@ -1,0 +1,9 @@
+{
+  "extends": "tsconfig/game.json",
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
