@@ -11,7 +11,12 @@
     "clean": "rm -rf dist/"
   },
   "dependencies": {
-    "pixi.js": "^7.1.4"
+    "@pixi/display": "^7.1.4",
+    "@pixi/app": "^7.1.4",
+    "@pixi/sprite": "^7.1.4",
+    "@pixi/assets": "^7.1.4",
+    "@pixi/core": "^7.1.4",
+    "@pixi/sound": "^5.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.21.0",

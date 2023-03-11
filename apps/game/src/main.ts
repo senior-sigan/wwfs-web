@@ -1,4 +1,20 @@
-import * as PIXI from "pixi.js";
+import { Application } from "@pixi/app";
+import { BaseTexture, SCALE_MODES } from "@pixi/core";
+import { Container } from "@pixi/display";
+import { sound } from "@pixi/sound";
+import { Sprite } from "@pixi/sprite";
+
+function loadSound() {
+  sound.add({
+    bgm: "assets/sound/bgm.mp3",
+    ricochet: "assets/sound/ricochet.mp3",
+    shoot: "assets/sound/shoot.mp3",
+    upsClipout: "assets/sound/ups_clipout.mp3",
+    vodaIzVedra: "assets/sound/voda_iz_vedra.mp3",
+    vodaV: "assets/sound/water_in.mp3",
+  });
+  // sound.play("bgm");
+}
 
 function network() {
   const ws = new WebSocket("ws://localhost:3001");
@@ -21,22 +37,22 @@ function network() {
 }
 
 function main() {
-  const app = new PIXI.Application<HTMLCanvasElement>({
+  const app = new Application<HTMLCanvasElement>({
     background: "#000000",
     width: 1161,
     height: 652,
     antialias: true,
   });
-  PIXI.BaseTexture.defaultOptions.scaleMode = PIXI.SCALE_MODES.NEAREST; // pixel perfect
+  BaseTexture.defaultOptions.scaleMode = SCALE_MODES.NEAREST; // pixel perfect
   document.body.appendChild(app.view);
 
-  const container = new PIXI.Container();
+  const container = new Container();
   container.x = 0;
   container.y = 0;
   app.stage.addChild(container);
 
   // create a new Sprite from an image path
-  const logo = PIXI.Sprite.from("assets/textures/menu.png");
+  const logo = Sprite.from("assets/textures/menu.png");
   logo.x = 0;
   logo.y = 0;
 
@@ -47,6 +63,8 @@ function main() {
   // });
 
   network();
+
+  loadSound();
 }
 
 main();
