@@ -16,5 +16,6 @@ module.exports = {
   },
   rules: {
     "@typescript-eslint/no-non-null-assertion": "off",
+    "linebreak-style": ["error", "unix"],
   },
 };

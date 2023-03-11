@@ -1,5 +1,25 @@
 import * as PIXI from "pixi.js";
 
+function network() {
+  const ws = new WebSocket("ws://localhost:3001");
+  let time = Date.now();
+  ws.onmessage = (ev) => {
+    const current = Date.now();
+    const dt = current - time;
+    time = current;
+
+    console.log(`MSG: dt=${dt} data=${ev.data}`);
+    ws.send("PONG");
+  };
+  ws.onclose = () => {
+    console.log("CLOSE");
+  };
+  ws.onopen = () => {
+    console.log("OPEN");
+    time = Date.now();
+  };
+}
+
 function main() {
   const SCALE = 16;
   const app = new PIXI.Application<HTMLCanvasElement>({
@@ -8,7 +28,7 @@ function main() {
     height: 48 * SCALE,
     antialias: true,
   });
-  PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST; // pixel perfect
+  PIXI.BaseTexture.defaultOptions.scaleMode = PIXI.SCALE_MODES.NEAREST; // pixel perfect
   document.body.appendChild(app.view);
 
   const container = new PIXI.Container();
@@ -27,6 +47,8 @@ function main() {
   // Listen for animate update
   // app.ticker.add((delta) => {
   // });
+
+  network();
 }
 
 main();

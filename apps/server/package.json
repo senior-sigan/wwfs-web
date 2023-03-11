@@ -2,17 +2,33 @@
   "name": "server",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
   "scripts": {
+    "dev": "nodemon",
+    "start": "node ./dist/index.js",
+    "build": "tsc",
     "lint": "eslint \"src/**/*.ts\""
   },
-  "dependencies": {},
+  "dependencies": {
+    "ws": "^8.13.0"
+  },
   "devDependencies": {
     "@babel/core": "^7.21.0",
     "eslint-config-custom": "workspace:*",
     "eslint": "^8.36.0",
     "tsconfig": "workspace:*",
     "@types/node": "^18.15.0",
-    "typescript": "^4.9.5"
+    "@types/ws": "^8.5.4",
+    "typescript": "^4.9.5",
+    "nodemon": "^2.0.21"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "src"
+    ],
+    "ignore": [
+      "src/**/*.test.ts"
+    ],
+    "ext": "ts,mjs,js,json",
+    "exec": "tsc && node ./dist/index.js"
   }
 }
