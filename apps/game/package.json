@@ -16,7 +16,8 @@
     "@pixi/sprite": "^7.1.4",
     "@pixi/assets": "^7.1.4",
     "@pixi/core": "^7.1.4",
-    "@pixi/sound": "^5.1.1"
+    "@pixi/sound": "^5.1.1",
+    "cat-lib": "workspace:*"
   },
   "devDependencies": {
     "@babel/core": "^7.21.0",

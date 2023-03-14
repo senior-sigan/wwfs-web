@@ -2,7 +2,8 @@ import { Application } from "@pixi/app";
 import { BaseTexture, SCALE_MODES } from "@pixi/core";
 import { Container } from "@pixi/display";
 import { sound } from "@pixi/sound";
-import { Sprite } from "@pixi/sprite";
+import { sceneManager } from "cat-lib";
+import { TitleScene } from "./scenes/title";
 
 function loadSound() {
   sound.add({
@@ -51,16 +52,14 @@ function main() {
   container.y = 0;
   app.stage.addChild(container);
 
-  // create a new Sprite from an image path
-  const logo = Sprite.from("assets/textures/menu.png");
-  logo.x = 0;
-  logo.y = 0;
+  sceneManager.put("title", new TitleScene(container));
 
-  container.addChild(logo);
+  sceneManager.set("title");
 
   // Listen for animate update
-  // app.ticker.add((delta) => {
-  // });
+  app.ticker.add((delta) => {
+    sceneManager.update(delta);
+  });
 
   network();
 

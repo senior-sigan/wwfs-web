@@ -1,0 +1,18 @@
+{
+  "name": "cat-lib",
+  "version": "0.0.0",
+  "private": true,
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "lint": "eslint \"src/**/*.ts\""
+  },
+  "devDependencies": {
+    "eslint-config-custom": "workspace:*",
+    "eslint": "^8.36.0",
+    "tsconfig": "workspace:*",
+    "@types/node": "^18.15.0",
+    "typescript": "^4.9.5",
+    "vite": "^4.1.4"
+  }
+}
