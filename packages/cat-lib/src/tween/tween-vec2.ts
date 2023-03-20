@@ -1,5 +1,5 @@
-import { clamp } from "../math";
-import { lerpVec2, Vec2 } from "../vec2";
+import { clamp } from "../math/math";
+import { lerpVec2, Vec2 } from "../math/vec2";
 import type { IUpdateable } from "../interfaces/updateable";
 
 type EasingFunction = (x: number) => number;

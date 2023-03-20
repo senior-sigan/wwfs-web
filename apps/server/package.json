@@ -3,13 +3,16 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "nodemon",
-    "start": "node ./dist/index.js",
-    "build": "tsc",
-    "lint": "eslint \"src/**/*.ts\""
+    "dev": "tsup src/index.ts --format cjs --watch --onSuccess \"node dist/index.js\"",
+    "start": "node dist/index.js",
+    "build": "tsup src/index.ts --format cjs",
+    "lint": "tsc --noEmit && eslint \"src/**/*.ts\"",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
-    "ws": "^8.13.0"
+    "ws": "^8.13.0",
+    "zod": "^3.21.4",
+    "cat-lib": "workspace:*"
   },
   "devDependencies": {
     "@babel/core": "^7.21.0",
@@ -19,7 +22,7 @@
     "@types/node": "^18.15.0",
     "@types/ws": "^8.5.4",
     "typescript": "^4.9.5",
-    "nodemon": "^2.0.21"
+    "tsup": "^6.7.0"
   },
   "nodemonConfig": {
     "watch": [
@@ -29,6 +32,6 @@
       "src/**/*.test.ts"
     ],
     "ext": "ts,mjs,js,json",
-    "exec": "tsc && node ./dist/index.js"
+    "exec": "tsc --noUnusedParameters false --noUnusedLocals false && node ./dist/index.js"
   }
 }

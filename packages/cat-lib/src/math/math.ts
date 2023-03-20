@@ -2,6 +2,10 @@ export function clamp(v: number, left: number, right: number) {
   return Math.max(left, Math.min(right, v));
 }
 
+export function clamp01(n: number) {
+  return clamp(n, 0, 1);
+}
+
 export function randomBetween(left: number, right: number) {
   return Math.random() * (right - left) + left;
 }

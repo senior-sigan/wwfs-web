@@ -1,2 +1,2 @@
-export * from "./scenes/scene";
-export * from "./scenes/scene-manager";
+export * from "./scenes";
+export * from "./math";

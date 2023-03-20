@@ -16,7 +16,7 @@ export class TitleScene implements IScene {
     console.log("Exit Active");
     this.container.removeChildren();
   }
-  update(dt: number): void {
+  update(_dt: number): void {
     // nothing to do
   }
 }
