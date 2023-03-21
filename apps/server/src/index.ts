@@ -1,5 +1,5 @@
 import { randomUUID } from "crypto";
-import { WebSocket, WebSocketServer } from "ws";
+import { RawData, WebSocket, WebSocketServer } from "ws";
 import { z } from "zod";
 import { clamp01, Rect, rectContainsPoint, Vec2 } from "cat-lib";
 
@@ -169,6 +169,15 @@ function onFire(msg: FireEvent, player: Player, room: Room) {
     });
 }
 
+function parseEvent(rawData: RawData) {
+  try {
+    return Event.parse(JSON.parse(rawData.toString("utf8")));
+  } catch (err) {
+    console.error("Cannot parse ev");
+  }
+  return undefined;
+}
+
 wss.on("connection", (ws) => {
   const room = findOrCreateRoom();
   const player = joinRoom(room, ws);
@@ -187,7 +196,11 @@ wss.on("connection", (ws) => {
 
   ws.on("message", (rawData) => {
     console.log(`MSG: rid=${room.rid} pid=${player.pid}`);
-    const data = Event.parse(JSON.parse(rawData.toString("utf8")));
+    const data = parseEvent(rawData);
+    if (!data) {
+      // ignoring
+      return;
+    }
     if (data.ev === "move") {
       player.moveEvents.push(data);
     }
@@ -218,9 +231,8 @@ wss.on("listening", () => {
 
 function update(room: Room) {
   const now = Date.now();
-  const dt = now - room.lastUpdate;
+  const _dt = now - room.lastUpdate;
   room.lastUpdate = now;
-  console.log(dt);
   return {};
 }
 

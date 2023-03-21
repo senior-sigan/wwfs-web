@@ -23,15 +23,5 @@
     "@types/ws": "^8.5.4",
     "typescript": "^4.9.5",
     "tsup": "^6.7.0"
-  },
-  "nodemonConfig": {
-    "watch": [
-      "src"
-    ],
-    "ignore": [
-      "src/**/*.test.ts"
-    ],
-    "ext": "ts,mjs,js,json",
-    "exec": "tsc --noUnusedParameters false --noUnusedLocals false && node ./dist/index.js"
   }
 }
