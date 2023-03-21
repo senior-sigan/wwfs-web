@@ -1,4 +1,4 @@
-import { randomUUID } from "crypto";
+import { randomUUID } from "node:crypto";
 import { RawData, WebSocket, WebSocketServer } from "ws";
 import { z } from "zod";
 import { clamp01, Rect, rectContainsPoint, Vec2 } from "cat-lib";
