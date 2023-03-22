@@ -2,7 +2,7 @@ import { RawData, WebSocket, WebSocketServer } from "ws";
 import { Player } from "./player";
 import { Room } from "./room";
 import { Event } from "./events";
-import { broadcast, sendTo } from "./messaging";
+import { sendTo } from "./messaging";
 
 const wss = new WebSocketServer({ port: 3001 });
 const rooms: Map<string, Room> = new Map();
@@ -40,12 +40,6 @@ wss.on("connection", (ws) => {
   ws.on("error", (err) => {
     console.error(`ERROR: rid=${room.rid} pid=${player.pid}`, err);
     room.left(player);
-    broadcast(room, (p) => ({
-      ev: "disconnect",
-      rid: room.rid,
-      other: player.pid,
-      me: p.pid,
-    }));
     ws.close();
   });
 
@@ -66,12 +60,6 @@ wss.on("connection", (ws) => {
   ws.on("close", () => {
     console.log(`CLOSE: rid=${room.rid} pid=${player.pid}`);
     room.left(player);
-    broadcast(room, (p) => ({
-      ev: "disconnect",
-      rid: room.rid,
-      other: player.pid,
-      me: p.pid,
-    }));
   });
 
   sendTo(player, { ev: "connection", rid: room.rid, me: player.pid });

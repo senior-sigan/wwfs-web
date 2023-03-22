@@ -1,6 +1,10 @@
 import { z } from "zod";
 
-const MoveEvent = z.object({ ev: z.literal("move"), dir: z.number() });
+const MoveEvent = z.object({
+  ev: z.literal("move"),
+  dir: z.number(),
+  standing: z.boolean(),
+});
 const FireEvent = z.object({
   ev: z.literal("fire"),
   target: z.object({

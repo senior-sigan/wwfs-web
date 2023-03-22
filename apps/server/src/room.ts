@@ -50,6 +50,16 @@ export class Room {
     const i = this.players.findIndex((p) => p.pid === player.pid);
     if (i >= 0 && i < this.players.length) {
       this.players.splice(i);
+      this.players.forEach((me) => {
+        player.ws.send(
+          JSON.stringify({
+            ev: "disconnect",
+            rid: this.rid,
+            other: player.pid,
+            me: me.pid,
+          })
+        );
+      });
       console.log(`Player left the room. pid=${player.pid} rid=${this.rid}`);
     } else {
       console.log(
