@@ -1,15 +1,15 @@
 import { RawData, WebSocket, WebSocketServer } from "ws";
 import { Player } from "./player";
 import { Room } from "./room";
-import { Event } from "./events";
-import { sendTo } from "./messaging";
+import { ClientEvent } from "shared";
 
 const wss = new WebSocketServer({ port: 3001 });
 const rooms: Map<string, Room> = new Map();
 
 function joinRoom(room: Room, ws: WebSocket): Player {
   const player = new Player(room.rid, ws);
-  return room.join(player);
+  room.join(player);
+  return player;
 }
 
 function findOrCreateRoom() {
@@ -26,7 +26,7 @@ function findOrCreateRoom() {
 
 function parseEvent(rawData: RawData) {
   try {
-    return Event.parse(JSON.parse(rawData.toString("utf8")));
+    return ClientEvent.parse(JSON.parse(rawData.toString("utf8")));
   } catch (err) {
     console.error("Cannot parse ev");
   }
@@ -65,7 +65,7 @@ wss.on("connection", (ws) => {
   console.log(
     `JOIN: rid=${room.rid} pid=${player.pid} players.size=${room.players.length}`
   );
-  sendTo(player, { ev: "connection", rid: room.rid, me: player.pid });
+  player.send({ ev: "connection", rid: room.rid, me: player.pid });
 });
 
 wss.on("listening", () => {

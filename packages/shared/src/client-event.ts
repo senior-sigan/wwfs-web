@@ -10,8 +10,8 @@ const FireEvent = z.object({
   mouseX: z.number(),
   mouseY: z.number(),
 });
-export const Event = z.discriminatedUnion("ev", [MoveEvent, FireEvent]);
+export const ClientEvent = z.discriminatedUnion("ev", [MoveEvent, FireEvent]);
 
 export type MoveEvent = z.infer<typeof MoveEvent>;
 export type FireEvent = z.infer<typeof FireEvent>;
-export type Event = z.infer<typeof Event>;
+export type ClientEvent = z.infer<typeof ClientEvent>;

@@ -51,9 +51,10 @@ export class Room {
     this.players.push(player);
     if (this.players.length >= MAX_PLAYERS_IN_ROOM) {
       this.started = true;
+      this.sendStarted();
     }
 
-    return player;
+    return this.started;
   }
 
   left(player: Player) {
@@ -61,14 +62,12 @@ export class Room {
     if (i >= 0 && i < this.players.length) {
       this.players.splice(i);
       this.players.forEach((me) => {
-        player.ws.send(
-          JSON.stringify({
-            ev: "disconnect",
-            rid: this.rid,
-            other: player.pid,
-            me: me.pid,
-          })
-        );
+        player.send({
+          ev: "disconnect",
+          rid: this.rid,
+          other: player.pid,
+          me: me.pid,
+        });
       });
       console.log(`LEFT: pid=${player.pid} rid=${this.rid}`);
     } else {
@@ -100,6 +99,16 @@ export class Room {
     }
   }
 
+  private sendStarted() {
+    this.players.forEach((player) => {
+      player.send({
+        ev: "started",
+        rid: this.rid,
+        me: player.pid,
+      });
+    });
+  }
+
   private sendState() {
     const state = {
       players: this.players.map((player) => ({
@@ -113,14 +122,12 @@ export class Room {
     };
 
     this.players.forEach((player) => {
-      player.ws.send(
-        JSON.stringify({
-          ev: "update",
-          rid: this.rid,
-          me: player.pid,
-          state: state,
-        })
-      );
+      player.send({
+        ev: "update",
+        rid: this.rid,
+        me: player.pid,
+        state: state,
+      });
     });
   }
 }

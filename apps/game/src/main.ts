@@ -3,7 +3,10 @@ import { BaseTexture, SCALE_MODES } from "@pixi/core";
 import { Container } from "@pixi/display";
 import { sound } from "@pixi/sound";
 import { sceneManager } from "cat-lib";
+import { GameScene } from "./scenes/game";
+import { PairingScene } from "./scenes/pairing";
 import { TitleScene } from "./scenes/title";
+import { ServerEvent } from "shared";
 
 function loadSound() {
   sound.add({
@@ -15,25 +18,6 @@ function loadSound() {
     vodaV: "assets/sound/water_in.mp3",
   });
   // sound.play("bgm");
-}
-
-function network() {
-  const ws = new WebSocket("ws://localhost:3001");
-  let time = Date.now();
-  ws.onmessage = (ev) => {
-    const current = Date.now();
-    const dt = current - time;
-    time = current;
-
-    console.log(`MSG: dt=${dt} data=${ev.data}`);
-  };
-  ws.onclose = () => {
-    console.log("CLOSE");
-  };
-  ws.onopen = () => {
-    console.log("OPEN");
-    time = Date.now();
-  };
 }
 
 function main() {
@@ -51,7 +35,11 @@ function main() {
   container.y = 0;
   app.stage.addChild(container);
 
+  const events: ServerEvent[] = [];
+
   sceneManager.put("title", new TitleScene(container));
+  sceneManager.put("pairing", new PairingScene(container, events));
+  sceneManager.put("game", new GameScene(container, events));
 
   sceneManager.set("title");
 
@@ -59,8 +47,6 @@ function main() {
   app.ticker.add((delta) => {
     sceneManager.update(delta);
   });
-
-  network();
 
   loadSound();
 }

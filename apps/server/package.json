@@ -12,7 +12,8 @@
   "dependencies": {
     "ws": "^8.13.0",
     "zod": "^3.21.4",
-    "cat-lib": "workspace:*"
+    "cat-lib": "workspace:*",
+    "shared": "workspace:*"
   },
   "devDependencies": {
     "@babel/core": "^7.21.0",

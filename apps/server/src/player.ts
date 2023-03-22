@@ -1,4 +1,4 @@
-import { MoveEvent, FireEvent } from "./events";
+import { MoveEvent, FireEvent, ServerEvent } from "shared";
 import { WebSocket } from "ws";
 import { randomUUID } from "node:crypto";
 import { Rect, Timer, Vec2 } from "cat-lib";
@@ -22,7 +22,7 @@ export class Player {
   private fireEvents: Array<FireEvent>;
   fireCommands: Array<Vec2>; // like delegate but a queue of commands
 
-  constructor(public readonly rid: string, public readonly ws: WebSocket) {
+  constructor(public readonly rid: string, private readonly ws: WebSocket) {
     this.pid = randomUUID();
     this.moveEvents = [];
     this.fireEvents = [];
@@ -53,6 +53,10 @@ export class Player {
     this.state.waterLevel /= 2;
   }
 
+  get stunned() {
+    return !this.state.stunTimer.isPassed;
+  }
+
   get bbox() {
     return new Rect(
       this.state.posX,
@@ -66,7 +70,7 @@ export class Player {
     // TODO: dummy network sync approach
     //  - beleive that client is not cheating by sending to many moveEvents
 
-    if (!this.state.stunTimer.isPassed) {
+    if (this.stunned) {
       this.moveEvents = [];
       this.fireEvents = [];
     }
@@ -95,36 +99,8 @@ export class Player {
     this.state.fireCooldown.update(dt);
     this.state.stunTimer.update(dt);
   }
+
+  send(event: ServerEvent) {
+    this.ws.send(JSON.stringify(event));
+  }
 }
-
-// function vec2({ x, y }: { x: number; y: number }) {
-//   return new Vec2(x, y);
-// }
-// function onMove(msg: MoveEvent, player: Player, room: Room) {
-//   player.state.posX += clamp01(msg.dir) * Balance.speed;
-//   if (player.state.posX > Balance.worldWidth) {
-//     player.state.posX = Balance.worldWidth;
-//   }
-//   if (player.state.posX < 0) {
-//     player.state.posX = 0;
-//   }
-// }
-
-// function applyHit(src: Player, dst: Player) {
-//   dst.state.waterLevel /= 2;
-//   dst.state.stunned = true;
-//   dst.state.stunTimer = Balance.stunTime;
-// }
-
-// function onFire(msg: FireEvent, player: Player, room: Room) {
-//   room.players
-//     .filter((p) => p.pid !== player.pid)
-//     .forEach((other) => {
-//       if (
-//         other.state.standing &&
-//         rectContainsPoint(vec2(msg.target), other.bbox)
-//       ) {
-//         applyHit(player, other);
-//       }
-//     });
-// }

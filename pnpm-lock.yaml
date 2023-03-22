@@ -25,9 +25,11 @@ importers:
       cat-lib: workspace:*
       eslint: ^8.36.0
       eslint-config-custom: workspace:*
+      shared: workspace:*
       tsconfig: workspace:*
       typescript: ^4.9.5
       vite: ^4.1.4
+      zod: ^3.21.4
     dependencies:
       '@pixi/app': 7.1.4
       '@pixi/assets': 7.1.4
@@ -36,6 +38,8 @@ importers:
       '@pixi/sound': 5.1.1_qej4uhnucehcei2k7hwbl3imr4
       '@pixi/sprite': 7.1.4
       cat-lib: link:../../packages/cat-lib
+      shared: link:../../packages/shared
+      zod: 3.21.4
     devDependencies:
       '@babel/core': 7.21.0
       '@types/node': 18.15.0
@@ -55,12 +59,14 @@ importers:
       eslint: ^8.36.0
       eslint-config-custom: workspace:*
       nodemon: ^2.0.21
+      shared: workspace:*
       tsconfig: workspace:*
       typescript: ^4.9.5
       ws: ^8.13.0
       zod: ^3.21.4
     dependencies:
       cat-lib: link:../../packages/cat-lib
+      shared: link:../../packages/shared
       ws: 8.13.0
       zod: 3.21.4
     devDependencies:
@@ -103,6 +109,23 @@ importers:
       eslint-config-prettier: 8.7.0_eslint@8.36.0
       eslint-config-turbo: 0.0.9_eslint@8.36.0
     devDependencies:
+      typescript: 4.9.5
+
+  packages/shared:
+    specifiers:
+      '@types/node': ^18.15.0
+      eslint: ^8.36.0
+      eslint-config-custom: workspace:*
+      tsconfig: workspace:*
+      typescript: ^4.9.5
+      zod: ^3.21.4
+    dependencies:
+      zod: 3.21.4
+    devDependencies:
+      '@types/node': 18.15.0
+      eslint: 8.36.0
+      eslint-config-custom: link:../eslint-config-custom
+      tsconfig: link:../tsconfig
       typescript: 4.9.5
 
   packages/tsconfig:
