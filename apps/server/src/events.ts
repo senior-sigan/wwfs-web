@@ -7,10 +7,8 @@ const MoveEvent = z.object({
 });
 const FireEvent = z.object({
   ev: z.literal("fire"),
-  target: z.object({
-    x: z.number(),
-    y: z.number(),
-  }),
+  mouseX: z.number(),
+  mouseY: z.number(),
 });
 export const Event = z.discriminatedUnion("ev", [MoveEvent, FireEvent]);
 

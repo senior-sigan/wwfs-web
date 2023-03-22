@@ -1,4 +1,4 @@
-import { clamp } from "cat-lib";
+import { clamp, rectContainsPoint, Vec2 } from "cat-lib";
 import { randomUUID } from "node:crypto";
 import { type Player } from "./player";
 
@@ -20,7 +20,7 @@ export class Room {
   }
 
   update() {
-    if (this.started) {
+    if (!this.started) {
       return;
     }
 
@@ -31,11 +31,21 @@ export class Room {
     for (const player of this.players) {
       player.update(dt);
     }
+    for (const player of this.players) {
+      while (player.fireCommands.length > 0) {
+        const cmd = player.fireCommands.pop();
+        if (cmd) {
+          this.doFire(player, cmd);
+        }
+      }
+    }
+
+    this.sendState();
   }
 
   join(player: Player) {
     if (this.players.length >= MAX_PLAYERS_IN_ROOM || this.started) {
-      throw new Error(`Cannot join the full room. rid=${this.rid}`);
+      throw new Error(`JOIN: room is full. rid=${this.rid}`);
     }
 
     this.players.push(player);
@@ -60,10 +70,10 @@ export class Room {
           })
         );
       });
-      console.log(`Player left the room. pid=${player.pid} rid=${this.rid}`);
+      console.log(`LEFT: pid=${player.pid} rid=${this.rid}`);
     } else {
-      console.log(
-        `Player cannot left the room: not found. pid=${player.pid} rid=${this.rid}`
+      console.error(
+        `LEFT: player not found. pid=${player.pid} rid=${this.rid}`
       );
     }
   }
@@ -75,5 +85,42 @@ export class Room {
   close() {
     // TODO: broadcast finish?
     clearInterval(this.timer);
+  }
+
+  private doFire(player: Player, target: Vec2) {
+    // Dummy collision detection
+    for (const other of this.players) {
+      if (other.pid === player.pid) {
+        continue;
+      }
+
+      if (rectContainsPoint(target, other.bbox)) {
+        other.stun();
+      }
+    }
+  }
+
+  private sendState() {
+    const state = {
+      players: this.players.map((player) => ({
+        posX: player.state.posX,
+        standing: player.state.standing,
+        waterLevel: player.state.waterLevel,
+        plantLevel: player.state.plantLevel,
+        stunned: !player.state.stunTimer.isPassed,
+        fired: player.state.fired,
+      })),
+    };
+
+    this.players.forEach((player) => {
+      player.ws.send(
+        JSON.stringify({
+          ev: "update",
+          rid: this.rid,
+          me: player.pid,
+          state: state,
+        })
+      );
+    });
   }
 }

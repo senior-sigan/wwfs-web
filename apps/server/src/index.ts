@@ -62,6 +62,9 @@ wss.on("connection", (ws) => {
     room.left(player);
   });
 
+  console.log(
+    `JOIN: rid=${room.rid} pid=${player.pid} players.size=${room.players.length}`
+  );
   sendTo(player, { ev: "connection", rid: room.rid, me: player.pid });
 });
 

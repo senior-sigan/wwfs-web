@@ -5,4 +5,5 @@ export const Balance = {
   playerHeight: 30,
   playerPosY: 300,
   stunTime: 3000,
+  fireCooldown: 4000,
 };

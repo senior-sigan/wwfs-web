@@ -9,7 +9,7 @@ export class Cooldown implements IUpdateable {
 
   invoke() {
     if (this.elapsed >= this.time) {
-      this.elapsed = 0;
+      this.elapsed -= this.time;
       return true;
     }
     return false;

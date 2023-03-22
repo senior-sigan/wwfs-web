@@ -26,7 +26,6 @@ function network() {
     time = current;
 
     console.log(`MSG: dt=${dt} data=${ev.data}`);
-    ws.send("PONG");
   };
   ws.onclose = () => {
     console.log("CLOSE");
