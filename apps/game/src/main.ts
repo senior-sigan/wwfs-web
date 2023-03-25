@@ -25,11 +25,11 @@ async function main() {
   container.y = 0;
   app.stage.addChild(container);
 
-  const events: ServerEvent[] = [];
-
   sceneManager.put("title", new TitleScene(container));
-  sceneManager.put("pairing", new PairingScene(container, events));
-  sceneManager.put("game", new GameScene(container, events));
+  // supposing TitleScreen loads all the assets
+  // so next screens can use Assets.get without awaits
+  sceneManager.put("pairing", new PairingScene(container));
+  sceneManager.put("game", new GameScene(container));
 
   sceneManager.set("title");
 

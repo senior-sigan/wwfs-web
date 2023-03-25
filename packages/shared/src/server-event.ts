@@ -9,6 +9,7 @@ const StartedEvent = z.object({
   ev: z.literal("started"),
   rid: z.string(),
   me: z.string(),
+  theme: z.enum(["good", "ugly"]),
 });
 const UpdateEvent = z.object({
   ev: z.literal("update"),

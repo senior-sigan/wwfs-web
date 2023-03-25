@@ -105,6 +105,7 @@ export class Room {
         ev: "started",
         rid: this.rid,
         me: player.pid,
+        theme: player.state.theme,
       });
     });
   }

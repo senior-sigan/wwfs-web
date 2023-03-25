@@ -1,6 +1,7 @@
 import { Assets, ResolverManifest } from "@pixi/assets";
 import { sound } from "@pixi/sound";
 import { Sprite } from "@pixi/sprite";
+import { ThemeName } from "shared";
 
 const manifest: ResolverManifest = {
   bundles: [
@@ -80,28 +81,27 @@ export type ThemePack = {
   loseScreen: Sprite;
 };
 
-function get(name: string) {
-  const tex = Assets.get(name);
-  return new Sprite(tex);
-}
-
-export function loadThemes() {
+export function loadThemes(): Record<ThemeName, ThemePack> {
   return {
     good: {
-      hedge: get("goodHedge"),
-      enemyHedge: get("goodEnemyHedge"),
-      plant: [get("corn1"), get("corn2"), get("corn3")],
-      background: get("mexico"),
-      winScreen: get("win-screen-american"),
-      loseScreen: get("lose-screen-american"),
+      hedge: Sprite.from("goodHedge"),
+      enemyHedge: Sprite.from("goodEnemyHedge"),
+      plant: [Sprite.from("corn1"), Sprite.from("corn2"), Sprite.from("corn3")],
+      background: Sprite.from("mexico"),
+      winScreen: Sprite.from("win-screen-american"),
+      loseScreen: Sprite.from("lose-screen-american"),
     },
     ugly: {
-      hedge: get("uglyHedge"),
-      enemyHedge: get("uglyEnemyHedge"),
-      plant: [get("tomatos1"), get("tomatos2"), get("tomatos3")],
-      background: get("america"),
-      winScreen: get("win-screen-mexico"),
-      loseScreen: get("lose-screen-mexico"),
+      hedge: Sprite.from("uglyHedge"),
+      enemyHedge: Sprite.from("uglyEnemyHedge"),
+      plant: [
+        Sprite.from("tomatos1"),
+        Sprite.from("tomatos2"),
+        Sprite.from("tomatos3"),
+      ],
+      background: Sprite.from("america"),
+      winScreen: Sprite.from("win-screen-mexico"),
+      loseScreen: Sprite.from("lose-screen-mexico"),
     },
   };
 }

@@ -1,13 +1,17 @@
 import { RawData, WebSocket, WebSocketServer } from "ws";
 import { Player } from "./player";
 import { Room } from "./room";
-import { ClientEvent } from "shared";
+import { ClientEvent, themeNames } from "shared";
 
 const wss = new WebSocketServer({ port: 3001 });
 const rooms: Map<string, Room> = new Map();
 
 function joinRoom(room: Room, ws: WebSocket): Player {
-  const player = new Player(room.rid, ws);
+  const player = new Player(
+    room.rid,
+    ws,
+    themeNames[room.players.length % themeNames.length]
+  );
   room.join(player);
   return player;
 }

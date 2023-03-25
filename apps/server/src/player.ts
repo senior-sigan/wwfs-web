@@ -1,4 +1,4 @@
-import { MoveEvent, FireEvent, ServerEvent } from "shared";
+import { MoveEvent, FireEvent, ServerEvent, ThemeName } from "shared";
 import { WebSocket } from "ws";
 import { randomUUID } from "node:crypto";
 import { Rect, Timer, Vec2 } from "cat-lib";
@@ -13,6 +13,7 @@ type PlayerState = {
   stunTimer: Timer;
   fireCooldown: Cooldown;
   fired: boolean;
+  theme: "ugly" | "good";
 };
 
 export class Player {
@@ -22,7 +23,11 @@ export class Player {
   private fireEvents: Array<FireEvent>;
   fireCommands: Array<Vec2>; // like delegate but a queue of commands
 
-  constructor(public readonly rid: string, private readonly ws: WebSocket) {
+  constructor(
+    public readonly rid: string,
+    private readonly ws: WebSocket,
+    theme: ThemeName
+  ) {
     this.pid = randomUUID();
     this.moveEvents = [];
     this.fireEvents = [];
@@ -37,6 +42,7 @@ export class Player {
       stunTimer: new Timer(Balance.stunTime, Balance.stunTime),
       fireCooldown: new Cooldown(Balance.fireCooldown),
       fired: false,
+      theme: theme,
     };
   }
 
