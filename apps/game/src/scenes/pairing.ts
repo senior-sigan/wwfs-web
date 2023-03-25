@@ -1,3 +1,4 @@
+import { Assets } from "@pixi/assets";
 import { Container } from "@pixi/display";
 import { Sprite } from "@pixi/sprite";
 import { IScene, sceneManager } from "cat-lib";
@@ -42,19 +43,17 @@ function network(oldWs: WebSocket | undefined, events: ServerEvent[]) {
 
 export class PairingScene implements IScene {
   ws: WebSocket | undefined;
-  logo: Sprite;
 
   constructor(public container: Container, private events: ServerEvent[]) {
     this.ws = undefined;
-    this.logo = Sprite.from("assets/textures/pairing_screen.png");
   }
 
   activate(): void {
     this.ws = network(this.ws, this.events);
-    this.container.addChild(this.logo);
+    this.container.addChild(new Sprite(Assets.get("pairing_screen")));
   }
   exit(): void {
-    this.container.removeChild(this.logo);
+    this.container.removeChildren();
   }
   update(_dt: number): void {
     while (this.events.length > 0) {

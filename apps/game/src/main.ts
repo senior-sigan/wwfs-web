@@ -1,26 +1,14 @@
 import { Application } from "@pixi/app";
 import { BaseTexture, SCALE_MODES } from "@pixi/core";
 import { Container } from "@pixi/display";
-import { sound } from "@pixi/sound";
 import { sceneManager } from "cat-lib";
 import { GameScene } from "./scenes/game";
 import { PairingScene } from "./scenes/pairing";
 import { TitleScene } from "./scenes/title";
 import { ServerEvent } from "shared";
+import { loadAssets } from "./assets";
 
-function loadSound() {
-  sound.add({
-    bgm: "assets/sound/bgm.mp3",
-    ricochet: "assets/sound/ricochet.mp3",
-    shoot: "assets/sound/shoot.mp3",
-    upsClipout: "assets/sound/ups_clipout.mp3",
-    vodaIzVedra: "assets/sound/voda_iz_vedra.mp3",
-    vodaV: "assets/sound/water_in.mp3",
-  });
-  // sound.play("bgm");
-}
-
-function main() {
+async function main() {
   const app = new Application<HTMLCanvasElement>({
     background: "#000000",
     width: 1161,
@@ -29,6 +17,8 @@ function main() {
   });
   BaseTexture.defaultOptions.scaleMode = SCALE_MODES.NEAREST; // pixel perfect
   document.body.appendChild(app.view);
+
+  await loadAssets();
 
   const container = new Container();
   container.x = 0;
@@ -47,8 +37,16 @@ function main() {
   app.ticker.add((delta) => {
     sceneManager.update(delta);
   });
-
-  loadSound();
 }
 
-main();
+window.onload = function () {
+  main()
+    .then(() => {
+      console.log("[START]");
+    })
+    .catch((err) => console.error(err));
+  window.focus();
+};
+window.onclick = function () {
+  window.focus();
+};
