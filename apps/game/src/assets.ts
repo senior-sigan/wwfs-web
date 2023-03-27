@@ -49,6 +49,9 @@ const manifest: ResolverManifest = {
           name: "lose-screen-mexico",
           srcs: "textures/lose-screen-mexico.png",
         },
+        { name: "ground", srcs: "textures/myGround.png" },
+        { name: "road", srcs: "textures/road.png" },
+        { name: "sky", srcs: "textures/sky.png" },
       ],
     },
   ],
@@ -79,6 +82,9 @@ export type ThemePack = {
   background: Sprite;
   winScreen: Sprite;
   loseScreen: Sprite;
+  ground: Sprite;
+  road: Sprite;
+  sky: Sprite;
 };
 
 export function loadThemes(): Record<ThemeName, ThemePack> {
@@ -90,6 +96,9 @@ export function loadThemes(): Record<ThemeName, ThemePack> {
       background: Sprite.from("mexico"),
       winScreen: Sprite.from("win-screen-american"),
       loseScreen: Sprite.from("lose-screen-american"),
+      ground: Sprite.from("ground"),
+      road: Sprite.from("road"),
+      sky: Sprite.from("sky"),
     },
     ugly: {
       hedge: Sprite.from("uglyHedge"),
@@ -102,6 +111,9 @@ export function loadThemes(): Record<ThemeName, ThemePack> {
       background: Sprite.from("america"),
       winScreen: Sprite.from("win-screen-mexico"),
       loseScreen: Sprite.from("lose-screen-mexico"),
+      ground: Sprite.from("ground"),
+      road: Sprite.from("road"),
+      sky: Sprite.from("sky"),
     },
   };
 }
