@@ -9,8 +9,9 @@ const linearEasing = (x: number) => x;
 export type TweenProps<T> = {
   from: T;
   to: T;
-  easing: EasingFunction | undefined;
-  onComplete: (() => void) | undefined;
+  time: number;
+  easing?: EasingFunction | undefined;
+  onComplete?: (() => void) | undefined;
 };
 export class Tween<T> implements IUpdateable {
   private elapsed = 0;
@@ -22,10 +23,10 @@ export class Tween<T> implements IUpdateable {
   private onComplete: (() => void) | undefined;
 
   constructor(
-    { from, to, easing, onComplete }: TweenProps<T>,
+    { from, to, time, easing, onComplete }: TweenProps<T>,
     private lerp: LerpFunction<T>
   ) {
-    this.time = 0;
+    this.time = time;
     this.from = from;
     this.to = to;
     this.easing = easing ?? linearEasing;
@@ -42,6 +43,7 @@ export class Tween<T> implements IUpdateable {
   }
 
   get progress() {
+    if (this.time === 0) return 0;
     return clamp(this.elapsed / this.time, 0, 1);
   }
 
