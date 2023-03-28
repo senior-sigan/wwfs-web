@@ -9,9 +9,8 @@ export class TitleScene implements IScene {
   constructor(public container: Container) {}
 
   activate(): void {
-    console.log("Activate Title");
     Assets.load("logo").then((tex) => {
-      const logo = new Sprite(tex);
+      const logo = Sprite.from(tex);
       logo.x = 0;
       logo.y = 0;
       logo.scale = { x: 16, y: 16 };
@@ -22,7 +21,6 @@ export class TitleScene implements IScene {
     });
   }
   exit(): void {
-    console.log("Exit Active");
     this.container.removeChildren();
   }
   update(_dt: number): void {

@@ -36,6 +36,7 @@ const manifest: ResolverManifest = {
         },
 
         { name: "player_ugly", srcs: "textures/player_ugly.png" },
+        { name: "uglyHedge", srcs: "textures/uglyHedge.png" },
         { name: "uglyEnemyHedge", srcs: "textures/uglyEnemyHedge.png" },
         { name: "tomatos1", srcs: "textures/tomatos1.png" },
         { name: "tomatos2", srcs: "textures/tomatos2.png" },

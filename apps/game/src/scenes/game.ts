@@ -1,5 +1,6 @@
 import { Container } from "@pixi/display";
-import { IScene, IUpdateable } from "cat-lib";
+import { Sprite } from "@pixi/sprite";
+import { clamp, inputs, Inputs, IScene, IUpdateable } from "cat-lib";
 import type { ThemePack } from "../assets";
 import { loadThemes } from "../assets";
 import { UI } from "../consts";
@@ -23,34 +24,73 @@ export class GameScene implements IScene {
 }
 
 class ParallaxTween implements IUpdateable {
-  //
+  private readonly minRange: number;
+  private readonly maxRange: number;
+  value: number;
+  reverse = false;
+
+  constructor(
+    range: readonly [number, number],
+    private speed: number,
+    private dir: -1 | 1
+  ) {
+    this.value = range[0];
+    this.minRange = Math.min(range[0], range[1]);
+    this.maxRange = Math.max(range[0], range[1]);
+  }
+
+  update(dt: number): void {
+    const dir = this.reverse ? -this.dir : this.dir;
+    const next = this.value + dir * this.speed * dt;
+    this.value = clamp(next, this.minRange, this.maxRange);
+  }
 }
 
 class GameUpdater implements IUpdateable {
   theme: ThemePack;
 
-  bgTween: ParallaxTween;
-  hedgeTween: ParallaxTween;
-  enemyHedgeTween: ParallaxTween;
-  roadTween: ParallaxTween;
-  groundTween: ParallaxTween;
+  bgTween = new ParallaxTween(
+    UI.enemyBackYRange,
+    UI.enemyBackParallaxSpeed,
+    -1
+  );
+  hedgeTween = new ParallaxTween(UI.myHedgeYRange, UI.myHedgeParallaxSpeed, 1);
+  enemyHedgeTween = new ParallaxTween(
+    UI.enemyHedgeYRange,
+    UI.enemyHedgeParallaxSpeed,
+    -1
+  );
+  roadTween = new ParallaxTween(UI.roadYRange, UI.roadParallaxSpeed, 1);
+  groundTween = new ParallaxTween(UI.groundYRange, UI.groundParallaxSpeed, 1);
+
+  private spriteTweens: Array<readonly [Sprite, ParallaxTween]>;
 
   constructor(public container: Container) {
     this.theme = loadThemes()[networkState.theme];
-    this.container.addChild(this.theme.background);
-    this.container.addChild(this.theme.hedge);
-    this.container.addChild(this.theme.enemyHedge);
-    this.container.addChild(this.theme.road);
-    this.container.addChild(this.theme.background);
     this.container.addChild(this.theme.sky);
-    this.theme.background.y = UI.enemyBackYRange.y;
-    this.theme.sky.y = UI.skyPosY;
-    this.theme.hedge.position = UI.myHedgeYRange;
+
+    this.spriteTweens = [
+      [this.theme.background, this.bgTween],
+      [this.theme.enemyHedge, this.enemyHedgeTween],
+      [this.theme.road, this.roadTween],
+      [this.theme.hedge, this.hedgeTween],
+      [this.theme.ground, this.groundTween],
+    ];
+    for (const [sprite, tween] of this.spriteTweens) {
+      this.container.addChild(sprite);
+      sprite.y = tween.value;
+    }
   }
 
   update(dt: number): void {
     while (networkState.events.length > 0) {
       const _ev = networkState.events.pop();
+    }
+
+    for (const [sprite, tween] of this.spriteTweens) {
+      tween.reverse = inputs.isPressed("KeyS");
+      tween.update(dt);
+      sprite.y = tween.value;
     }
   }
 }

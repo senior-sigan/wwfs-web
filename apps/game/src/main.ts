@@ -1,11 +1,10 @@
 import { Application } from "@pixi/app";
 import { BaseTexture, SCALE_MODES } from "@pixi/core";
 import { Container } from "@pixi/display";
-import { sceneManager } from "cat-lib";
+import { inputs, sceneManager } from "cat-lib";
 import { GameScene } from "./scenes/game";
 import { PairingScene } from "./scenes/pairing";
 import { TitleScene } from "./scenes/title";
-import { ServerEvent } from "shared";
 import { loadAssets } from "./assets";
 
 async function main() {
@@ -17,6 +16,8 @@ async function main() {
   });
   BaseTexture.defaultOptions.scaleMode = SCALE_MODES.NEAREST; // pixel perfect
   document.body.appendChild(app.view);
+
+  inputs.connect();
 
   await loadAssets();
 
@@ -35,6 +36,7 @@ async function main() {
 
   // Listen for animate update
   app.ticker.add((delta) => {
+    inputs.update(delta);
     sceneManager.update(delta);
   });
 }

@@ -1,44 +1,44 @@
-import { Vec2 } from "cat-lib";
+import { Inputs } from "cat-lib";
 
 export const UI = {
   skyPosY: 91,
 
-  enemyYRange: new Vec2(303, 415),
+  enemyYRange: [303, 415] as const,
   enemyParallaxSpeed: 793,
 
-  enemyBackYRange: new Vec2(100, 175),
+  enemyBackYRange: [652 - 336 - 100, 652 - 336 - 175] as const,
   enemyBackParallaxSpeed: 500,
 
-  myHedgeYRange: new Vec2(-31, 87),
+  myHedgeYRange: [652 - 320 + 31, 652 - 320 - 87] as const,
   myHedgeParallaxSpeed: 1100,
 
-  groundYRange: new Vec2(-47, 0),
+  groundYRange: [652 - 416 + 47, 652 - 416] as const,
   groundParallaxSpeed: 800,
 
-  roadYRange: new Vec2(257, 257),
+  roadYRange: [652 - 64 - 257, 652 - 64 - 257] as const,
   roadParallaxSpeed: 800,
 
-  enemyHedgeYRange: new Vec2(247, 290),
+  enemyHedgeYRange: [652 - 136 - 247, 652 - 136 - 290] as const,
   enemyHedgeParallaxSpeed: 720,
 
   playerY: 10,
   playerMinX: 41,
-  playerUpWH: new Vec2(320, 360),
-  playerDownWH: new Vec2(320, 300),
+  playerUpWH: [320, 360] as const,
+  playerDownWH: [320, 300] as const,
 
   enemyY: 415,
-  enemyUpWH: new Vec2(80, 96),
-  enemyDownWH: new Vec2(80, 96),
+  enemyUpWH: [80, 96] as const,
+  enemyDownWH: [80, 96] as const,
 
-  enemyUpPhysWH: new Vec2(80, 96),
+  enemyUpPhysWH: [80, 96] as const,
 
-  pumpPosition: new Vec2(58, 14),
+  pumpPosition: [58, 14] as const,
   pumpEpsilon: 10,
 
-  plantPos: new Vec2(900, 9),
+  plantPos: [900, 9] as const,
   plantEpsilon: 10,
 
   hatSpeed: 600,
-  upbarPos: new Vec2(0, 581),
-  waterbarPos: new Vec2(14, 14),
+  upbarPos: [0, 581] as const,
+  waterbarPos: [14, 14] as const,
 };
