@@ -1,11 +1,12 @@
 import { Application } from "@pixi/app";
 import { BaseTexture, SCALE_MODES } from "@pixi/core";
 import { Container } from "@pixi/display";
-import { inputs, sceneManager } from "cat-lib";
+import { sceneManager } from "cat-lib";
 import { GameScene } from "./scenes/game";
 import { PairingScene } from "./scenes/pairing";
 import { TitleScene } from "./scenes/title";
 import { loadAssets } from "./assets";
+import { inputs } from "cat-lib-web";
 
 async function main() {
   const app = new Application<HTMLCanvasElement>({

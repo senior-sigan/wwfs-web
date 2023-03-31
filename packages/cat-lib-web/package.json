@@ -1,5 +1,5 @@
 {
-  "name": "cat-lib",
+  "name": "cat-lib-web",
   "version": "0.0.0",
   "private": true,
   "sideEffects": false,
@@ -18,5 +18,8 @@
     "eslint": "^8.37.0",
     "@types/node": "^18.15.11",
     "typescript": "^5.0.3"
+  },
+  "peerDependencies": {
+    "cat-lib": "workspace:*"
   }
 }

@@ -1,4 +1,4 @@
-import { IUpdateable } from "./interfaces/updateable";
+import { IUpdateable } from "../../cat-lib/src/interfaces/updateable";
 
 function gpid(gp: Gamepad) {
   return `${gp.id}_${gp.index}`;

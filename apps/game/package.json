@@ -11,23 +11,24 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
-    "@pixi/display": "^7.1.4",
-    "@pixi/app": "^7.1.4",
-    "@pixi/sprite": "^7.1.4",
-    "@pixi/assets": "^7.1.4",
-    "@pixi/core": "^7.1.4",
-    "@pixi/sound": "^5.1.1",
     "cat-lib": "workspace:*",
+    "cat-lib-web": "workspace:*",
     "shared": "workspace:*",
+    "@pixi/display": "^7.2.3",
+    "@pixi/app": "^7.2.3",
+    "@pixi/sprite": "^7.2.3",
+    "@pixi/assets": "^7.2.3",
+    "@pixi/core": "^7.2.3",
+    "@pixi/sound": "^5.1.1",
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.21.0",
-    "eslint-config-custom": "workspace:*",
-    "eslint": "^8.36.0",
     "tsconfig": "workspace:*",
-    "@types/node": "^18.15.0",
-    "typescript": "^4.9.5",
-    "vite": "^4.1.4"
+    "eslint-config-custom": "workspace:*",
+    "eslint": "^8.37.0",
+    "@types/node": "^18.15.11",
+    "typescript": "^5.0.3",
+    "vite": "^4.2.1",
+    "@babel/core": "^7.21.4"
   }
 }

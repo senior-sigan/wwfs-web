@@ -1,6 +1,7 @@
 import { Container } from "@pixi/display";
 import { Sprite } from "@pixi/sprite";
-import { clamp, inputs, Inputs, IScene, IUpdateable } from "cat-lib";
+import { clamp, IScene, IUpdateable } from "cat-lib";
+import { inputs } from "cat-lib-web";
 import type { ThemePack } from "../assets";
 import { loadThemes } from "../assets";
 import { UI } from "../consts";

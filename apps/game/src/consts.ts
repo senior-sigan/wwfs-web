@@ -1,5 +1,3 @@
-import { Inputs } from "cat-lib";
-
 export const UI = {
   skyPosY: 91,
 
