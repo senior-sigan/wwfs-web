@@ -28,12 +28,18 @@ importers:
       '@pixi/display':
         specifier: ^7.2.3
         version: 7.2.3(@pixi/core@7.2.3)
+      '@pixi/events':
+        specifier: ^7.2.3
+        version: 7.2.3(@pixi/core@7.2.3)(@pixi/display@7.2.3)(@pixi/utils@7.2.3)
       '@pixi/sound':
         specifier: ^5.1.1
         version: 5.1.1(@pixi/assets@7.2.3)(@pixi/core@7.2.3)
       '@pixi/sprite':
         specifier: ^7.2.3
         version: 7.2.3(@pixi/core@7.2.3)(@pixi/display@7.2.3)
+      '@pixi/sprite-animated':
+        specifier: ^7.2.3
+        version: 7.2.3(@pixi/core@7.2.3)(@pixi/sprite@7.2.3)
       cat-lib:
         specifier: workspace:*
         version: link:../../packages/cat-lib
@@ -760,6 +766,18 @@ packages:
       '@pixi/core': 7.2.3
     dev: false
 
+  /@pixi/events@7.2.3(@pixi/core@7.2.3)(@pixi/display@7.2.3)(@pixi/utils@7.2.3):
+    resolution: {integrity: sha512-+XKBEr3ZULdYlov0up7PrcwJ9+cDvI2y+S+2xWMR9EmKTKgsCfAF3WNh1EfDM8Eixa+5FXvHceepBbyIbH7lTw==}
+    peerDependencies:
+      '@pixi/core': 7.2.3
+      '@pixi/display': 7.2.3
+      '@pixi/utils': 7.2.3
+    dependencies:
+      '@pixi/core': 7.2.3
+      '@pixi/display': 7.2.3(@pixi/core@7.2.3)
+      '@pixi/utils': 7.2.3
+    dev: false
+
   /@pixi/extensions@7.2.3:
     resolution: {integrity: sha512-HpNk531MEbIQtukGCuKI8JWhHTFL1wE8NMOQvtk1stJHZ19clLowHR8sTGnJhSfSWKcAF35u5vmTje5t5VvELQ==}
     dev: false
@@ -788,6 +806,16 @@ packages:
     dependencies:
       '@pixi/assets': 7.2.3(@pixi/core@7.2.3)(@pixi/utils@7.2.3)
       '@pixi/core': 7.2.3
+    dev: false
+
+  /@pixi/sprite-animated@7.2.3(@pixi/core@7.2.3)(@pixi/sprite@7.2.3):
+    resolution: {integrity: sha512-JMwOXjctJ++UWTnvcaVfEmv0xeG9T8luBcLfEexV4iFz3gsZkQpHzoeVC69w5rO3SAw6x3RVz0jGAJyHDfTdBQ==}
+    peerDependencies:
+      '@pixi/core': 7.2.3
+      '@pixi/sprite': 7.2.3
+    dependencies:
+      '@pixi/core': 7.2.3
+      '@pixi/sprite': 7.2.3(@pixi/core@7.2.3)(@pixi/display@7.2.3)
     dev: false
 
   /@pixi/sprite@7.2.3(@pixi/core@7.2.3)(@pixi/display@7.2.3):

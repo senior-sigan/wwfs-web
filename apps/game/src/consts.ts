@@ -19,7 +19,7 @@ export const UI = {
   enemyHedgeYRange: [652 - 136 - 247, 652 - 136 - 290] as const,
   enemyHedgeParallaxSpeed: 14,
 
-  playerY: 10,
+  playerY: 652 - 10 - 360,
   playerMinX: 41,
   playerUpWH: [320, 360] as const,
   playerDownWH: [320, 300] as const,

@@ -17,8 +17,10 @@
     "@pixi/display": "^7.2.3",
     "@pixi/app": "^7.2.3",
     "@pixi/sprite": "^7.2.3",
+    "@pixi/sprite-animated": "^7.2.3",
     "@pixi/assets": "^7.2.3",
     "@pixi/core": "^7.2.3",
+    "@pixi/events": "^7.2.3",
     "@pixi/sound": "^5.1.1",
     "zod": "^3.21.4"
   },

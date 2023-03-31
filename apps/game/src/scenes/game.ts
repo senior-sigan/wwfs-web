@@ -7,6 +7,7 @@ import { loadThemes } from "../assets";
 import { UI } from "../consts";
 import { networkState } from "../networking";
 import { ParallaxTween } from "../parallax";
+import { Player } from "../player";
 
 export class GameScene implements IScene {
   updater: GameUpdater | undefined;
@@ -41,6 +42,7 @@ class GameUpdater implements IUpdateable {
   );
   roadTween = new ParallaxTween(UI.roadYRange, UI.roadParallaxSpeed, 1);
   groundTween = new ParallaxTween(UI.groundYRange, UI.groundParallaxSpeed, 1);
+  player: Player;
 
   private spriteTweens: Array<readonly [Sprite, ParallaxTween]>;
 
@@ -59,6 +61,7 @@ class GameUpdater implements IUpdateable {
       this.container.addChild(sprite);
       sprite.y = tween.value;
     }
+    this.player = new Player(container, this.theme);
   }
 
   update(dt: number): void {
@@ -71,5 +74,7 @@ class GameUpdater implements IUpdateable {
       tween.update(dt);
       sprite.y = tween.value;
     }
+
+    this.player.update(dt);
   }
 }
