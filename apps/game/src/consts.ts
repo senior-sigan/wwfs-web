@@ -2,22 +2,22 @@ export const UI = {
   skyPosY: 91,
 
   enemyYRange: [303, 415] as const,
-  enemyParallaxSpeed: 793,
+  enemyParallaxSpeed: 16,
 
   enemyBackYRange: [652 - 336 - 100, 652 - 336 - 175] as const,
-  enemyBackParallaxSpeed: 500,
+  enemyBackParallaxSpeed: 10,
 
   myHedgeYRange: [652 - 320 + 31, 652 - 320 - 87] as const,
-  myHedgeParallaxSpeed: 1100,
+  myHedgeParallaxSpeed: 22,
 
   groundYRange: [652 - 416 + 47, 652 - 416] as const,
-  groundParallaxSpeed: 800,
+  groundParallaxSpeed: 16,
 
   roadYRange: [652 - 64 - 257, 652 - 64 - 257] as const,
-  roadParallaxSpeed: 800,
+  roadParallaxSpeed: 16,
 
   enemyHedgeYRange: [652 - 136 - 247, 652 - 136 - 290] as const,
-  enemyHedgeParallaxSpeed: 720,
+  enemyHedgeParallaxSpeed: 14,
 
   playerY: 10,
   playerMinX: 41,

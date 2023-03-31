@@ -26,7 +26,7 @@ export class TitleScene implements IScene {
   update(_dt: number): void {
     // nothing to do
     if (this.ready) {
-      sceneManager.set("pairing");
+      sceneManager.set("game");
     }
   }
 }
