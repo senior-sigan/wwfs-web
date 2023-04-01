@@ -1,4 +1,4 @@
-import { clamp, rectContainsPoint, Vec2 } from "cat-lib";
+import { clamp, Cooldown, rectContainsPoint, Vec2 } from "cat-lib";
 import { randomUUID } from "node:crypto";
 import { type Player } from "./player";
 
@@ -20,13 +20,13 @@ export class Room {
   }
 
   update() {
+    const now = Date.now();
+    const dt = clamp(now - this.lastUpdate, 1, 10000) / 1000; // in seconds
+    this.lastUpdate = now;
+
     if (!this.started) {
       return;
     }
-
-    const now = Date.now();
-    const dt = clamp(now - this.lastUpdate, 0.001, 1);
-    this.lastUpdate = now;
 
     for (const player of this.players) {
       player.update(dt);
@@ -78,7 +78,8 @@ export class Room {
   }
 
   get isDone() {
-    return this.started && this.players.length === 0;
+    const cnt = this.players.filter((p) => p.connected).length;
+    return this.started && cnt === 0;
   }
 
   close() {
@@ -95,39 +96,51 @@ export class Room {
 
       if (rectContainsPoint(target, other.bbox)) {
         other.stun();
+        player.state.fire = "hit";
+      } else {
+        player.state.fire = "missed";
       }
     }
   }
 
   private sendStarted() {
+    const state = this.buildState();
     this.players.forEach((player) => {
+      const playerState = state.players.filter((p) => p.pid === player.pid)[0];
+      const enemyState = state.players.filter((p) => p.pid !== player.pid)[0];
+      console.log(playerState.theme, enemyState.theme);
       player.send({
         ev: "started",
         rid: this.rid,
         me: player.pid,
-        theme: player.state.theme,
+        player: playerState,
+        enemy: enemyState,
       });
     });
   }
 
-  private sendState() {
-    const state = {
+  private buildState() {
+    return {
       players: this.players.map((player) => ({
+        pid: player.pid,
         posX: player.state.posX,
         standing: player.state.standing,
         waterLevel: player.state.waterLevel,
         plantLevel: player.state.plantLevel,
         stunned: !player.state.stunTimer.isPassed,
-        fired: player.state.fired,
+        fire: player.state.fire,
+        theme: player.state.theme,
       })),
     };
+  }
 
+  private sendState() {
     this.players.forEach((player) => {
       player.send({
         ev: "update",
         rid: this.rid,
         me: player.pid,
-        state: state,
+        state: this.buildState(),
       });
     });
   }

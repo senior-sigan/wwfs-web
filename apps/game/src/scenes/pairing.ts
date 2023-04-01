@@ -1,7 +1,7 @@
 import { Container } from "@pixi/display";
 import { Sprite } from "@pixi/sprite";
 import { IScene, sceneManager } from "cat-lib";
-import { Connect, networkState } from "../networking";
+import { networkState } from "../networking";
 
 export class PairingScene implements IScene {
   ws: WebSocket | undefined;
@@ -11,24 +11,24 @@ export class PairingScene implements IScene {
   }
 
   activate(): void {
-    this.ws = Connect();
+    networkState.reconnect("ws://localhost:3001");
     this.container.addChild(Sprite.from("pairing_screen"));
   }
   exit(): void {
     this.container.removeChildren();
   }
   update(_dt: number): void {
-    while (networkState.events.length > 0) {
-      const ev = networkState.events.pop();
-      if (!ev) break;
-
+    networkState.poll((ev) => {
       if (ev.ev === "started") {
         sceneManager.set("game");
-        networkState.theme = ev.theme;
+        console.log(ev.player.theme, ev.enemy.theme);
+        networkState.playerTheme = ev.player.theme;
+        networkState.enemyTheme = ev.enemy.theme;
+        networkState.me = ev.me;
       }
       if (ev.ev === "connection") {
         console.log("Waiting for players...");
       }
-    }
+    });
   }
 }

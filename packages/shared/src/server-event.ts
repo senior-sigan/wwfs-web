@@ -5,27 +5,29 @@ const ConnectionEvent = z.object({
   rid: z.string(),
   me: z.string(),
 });
+const PlayerData = z.object({
+  pid: z.string(),
+  posX: z.number(),
+  standing: z.boolean(),
+  waterLevel: z.number(),
+  plantLevel: z.number(),
+  stunned: z.boolean(),
+  fire: z.enum(["hit", "missed", "cooldown", ""]),
+  theme: z.enum(["good", "ugly"]),
+});
 const StartedEvent = z.object({
   ev: z.literal("started"),
   rid: z.string(),
   me: z.string(),
-  theme: z.enum(["good", "ugly"]),
+  player: PlayerData,
+  enemy: PlayerData,
 });
 const UpdateEvent = z.object({
   ev: z.literal("update"),
   rid: z.string(),
   me: z.string(),
   state: z.object({
-    players: z.array(
-      z.object({
-        posX: z.number(),
-        standing: z.boolean(),
-        waterLevel: z.number(),
-        plantLevel: z.number(),
-        stunned: z.boolean(),
-        fired: z.boolean(),
-      })
-    ),
+    players: z.array(PlayerData),
   }),
 });
 const DisconnectEvent = z.object({
@@ -46,3 +48,5 @@ export type StartedEvent = z.infer<typeof StartedEvent>;
 export type UpdateEvent = z.infer<typeof UpdateEvent>;
 export type DisconnectEvent = z.infer<typeof DisconnectEvent>;
 export type ServerEvent = z.infer<typeof ServerEvent>;
+
+export type PlayerData = z.infer<typeof PlayerData>;

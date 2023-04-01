@@ -5,6 +5,7 @@ import { inputs } from "cat-lib-web";
 import type { ThemePack } from "../assets";
 import { loadThemes } from "../assets";
 import { UI } from "../consts";
+import { Enemy } from "../enemy";
 import { networkState } from "../networking";
 import { ParallaxTween } from "../parallax";
 import { Player } from "../player";
@@ -27,8 +28,6 @@ export class GameScene implements IScene {
 }
 
 class GameUpdater implements IUpdateable {
-  theme: ThemePack;
-
   bgTween = new ParallaxTween(
     UI.enemyBackYRange,
     UI.enemyBackParallaxSpeed,
@@ -40,34 +39,55 @@ class GameUpdater implements IUpdateable {
     UI.enemyHedgeParallaxSpeed,
     -1
   );
+  enemyTween = new ParallaxTween(UI.enemyYRange, UI.enemyParallaxSpeed, -1);
   roadTween = new ParallaxTween(UI.roadYRange, UI.roadParallaxSpeed, 1);
   groundTween = new ParallaxTween(UI.groundYRange, UI.groundParallaxSpeed, 1);
-  player: Player;
 
-  private spriteTweens: Array<readonly [Sprite, ParallaxTween]>;
+  theme: ThemePack;
+  player: Player;
+  enemy: Enemy;
+
+  private spriteTweens: Array<readonly [{ y: number }, ParallaxTween]>;
 
   constructor(public container: Container) {
-    this.theme = loadThemes()[networkState.theme];
+    const themes = loadThemes();
+    this.theme = themes[networkState.playerTheme];
+
     this.container.addChild(this.theme.sky);
+
+    this.container.addChild(this.theme.background);
+    this.enemy = new Enemy(container, themes[networkState.enemyTheme]);
+    this.container.addChild(this.theme.enemyHedge);
+    this.container.addChild(this.theme.road);
+    this.container.addChild(this.theme.hedge);
+    this.container.addChild(this.theme.ground);
+    this.player = new Player(container, this.theme);
 
     this.spriteTweens = [
       [this.theme.background, this.bgTween],
+      [this.enemy, this.enemyTween],
       [this.theme.enemyHedge, this.enemyHedgeTween],
       [this.theme.road, this.roadTween],
       [this.theme.hedge, this.hedgeTween],
       [this.theme.ground, this.groundTween],
     ];
     for (const [sprite, tween] of this.spriteTweens) {
-      this.container.addChild(sprite);
       sprite.y = tween.value;
     }
-    this.player = new Player(container, this.theme);
   }
 
   update(dt: number): void {
-    while (networkState.events.length > 0) {
-      const _ev = networkState.events.pop();
-    }
+    networkState.poll((ev) => {
+      if (ev.ev === "update") {
+        ev.state.players.forEach((remotePlayer) => {
+          if (remotePlayer.pid === ev.me) {
+            this.player.onUpdate(remotePlayer);
+          } else {
+            this.enemy.onUpdate(remotePlayer);
+          }
+        });
+      }
+    });
 
     for (const [sprite, tween] of this.spriteTweens) {
       tween.reverse = inputs.isPressed("KeyS");
@@ -76,5 +96,8 @@ class GameUpdater implements IUpdateable {
     }
 
     this.player.update(dt);
+    this.enemy.update(dt);
+
+    networkState.update(dt);
   }
 }

@@ -1,7 +1,7 @@
 export const UI = {
   skyPosY: 91,
 
-  enemyYRange: [303, 415] as const,
+  enemyYRange: [652 - 415 - 80, 652 - 303 - 80] as const,
   enemyParallaxSpeed: 16,
 
   enemyBackYRange: [652 - 336 - 100, 652 - 336 - 175] as const,
@@ -24,7 +24,7 @@ export const UI = {
   playerUpWH: [320, 360] as const,
   playerDownWH: [320, 300] as const,
 
-  enemyY: 415,
+  enemyX: 100,
   enemyUpWH: [80, 96] as const,
   enemyDownWH: [80, 96] as const,
 

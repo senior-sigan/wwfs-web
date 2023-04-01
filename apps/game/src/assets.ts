@@ -23,6 +23,7 @@ const manifest: ResolverManifest = {
         { name: "pairing_screen", srcs: "textures/pairing_screen.png" },
         { name: "player_good", srcs: "textures/player_good.png" },
 
+        { name: "enemy_ugly", srcs: "textures/enemy_ugly.png" },
         { name: "goodHedge", srcs: "textures/goodHedge.png" },
         { name: "goodEnemyHedge", srcs: "textures/goodEnemyHedge.png" },
         { name: "corn1", srcs: "textures/corn1.png" },
@@ -38,6 +39,7 @@ const manifest: ResolverManifest = {
           srcs: "textures/lose-screen-american.png",
         },
 
+        { name: "enemy_good", srcs: "textures/enemy_good.png" },
         { name: "player_ugly", srcs: "textures/player_ugly.png" },
         { name: "uglyHedge", srcs: "textures/uglyHedge.png" },
         { name: "uglyEnemyHedge", srcs: "textures/uglyEnemyHedge.png" },
@@ -105,8 +107,13 @@ export type PlayerPack = {
   crawling: AnimatedSprite;
   killed: Sprite;
 };
+export type EnemyPack = {
+  up: Sprite;
+  shooting: AnimatedSprite;
+};
 export type ThemePack = {
   player: PlayerPack;
+  enemy: EnemyPack;
   hedge: Sprite;
   enemyHedge: Sprite;
   plant: Sprite[];
@@ -140,10 +147,22 @@ function playerSprites(assetName: string): PlayerPack {
   };
 }
 
+function enemySprites(assetName: string): EnemyPack {
+  const textures = splitTexture(assetName, 104, 80);
+  return {
+    up: Sprite.from(textures[0]),
+    shooting: also(
+      new AnimatedSprite([textures[0], textures[1], textures[0]]),
+      (it) => (it.animationSpeed = 0.2)
+    ),
+  };
+}
+
 export function loadThemes(): Record<ThemeName, ThemePack> {
   return {
     good: {
       player: playerSprites("player_good"),
+      enemy: enemySprites("enemy_good"),
       hedge: Sprite.from("goodHedge"),
       enemyHedge: Sprite.from("goodEnemyHedge"),
       plant: [Sprite.from("corn1"), Sprite.from("corn2"), Sprite.from("corn3")],
@@ -156,6 +175,7 @@ export function loadThemes(): Record<ThemeName, ThemePack> {
     },
     ugly: {
       player: playerSprites("player_ugly"),
+      enemy: enemySprites("enemy_ugly"),
       hedge: Sprite.from("uglyHedge"),
       enemyHedge: Sprite.from("uglyEnemyHedge"),
       plant: [

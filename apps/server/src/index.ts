@@ -49,15 +49,13 @@ wss.on("connection", (ws) => {
 
   ws.on("message", (rawData) => {
     const data = parseEvent(rawData);
-    if (!data) {
-      // ignoring
-      return;
-    }
-    if (data.ev === "move") {
-      player.onMove(data);
-    }
-    if (data.ev === "fire") {
-      player.onFire(data);
+    if (data) {
+      if (data.ev === "move") {
+        player.onMove(data);
+      }
+      if (data.ev === "fire") {
+        player.onFire(data);
+      }
     }
   });
 
@@ -89,6 +87,8 @@ function cleanup() {
   for (const rid of toDelete) {
     rooms.delete(rid);
   }
+
+  console.log(`CLEANUP: aliveRooms=${rooms.size}`);
 }
 
-setInterval(() => cleanup(), 1000 * 60);
+setInterval(() => cleanup(), 5000);

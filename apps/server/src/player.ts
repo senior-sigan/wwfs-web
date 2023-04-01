@@ -5,20 +5,18 @@ import { Rect, Timer, Vec2 } from "cat-lib";
 import { Balance } from "./consts";
 import { Cooldown } from "cat-lib";
 
-type PlayerState = {
-  posX: number;
-  standing: boolean;
-  waterLevel: number;
-  plantLevel: number;
-  stunTimer: Timer;
-  fireCooldown: Cooldown;
-  fired: boolean;
-  theme: "ugly" | "good";
-};
-
 export class Player {
   readonly pid: string;
-  state: PlayerState;
+  state: {
+    posX: number;
+    standing: boolean;
+    waterLevel: number;
+    plantLevel: number;
+    stunTimer: Timer;
+    fireCooldown: Cooldown;
+    fire: "hit" | "missed" | "cooldown" | "";
+    theme: "ugly" | "good";
+  };
   private moveEvents: Array<MoveEvent>;
   private fireEvents: Array<FireEvent>;
   fireCommands: Array<Vec2>; // like delegate but a queue of commands
@@ -41,7 +39,7 @@ export class Player {
       plantLevel: 0,
       stunTimer: new Timer(Balance.stunTime, Balance.stunTime),
       fireCooldown: new Cooldown(Balance.fireCooldown),
-      fired: false,
+      fire: "",
       theme: theme,
     };
   }
@@ -57,6 +55,10 @@ export class Player {
   stun() {
     this.state.stunTimer.reset();
     this.state.waterLevel /= 2;
+  }
+
+  get connected() {
+    return this.ws.OPEN || this.ws.CONNECTING;
   }
 
   get stunned() {
@@ -91,14 +93,17 @@ export class Player {
       this.state.standing = ev.standing;
     }
 
-    this.state.fired = false;
+    this.state.fire = "";
     while (this.fireEvents.length > 0) {
       const ev = this.fireEvents.pop();
       if (!ev) break;
 
       if (this.state.fireCooldown.invoke()) {
         this.fireCommands.push(new Vec2(ev.mouseX, ev.mouseY));
-        this.state.fired = true;
+        console.log("SHOOT");
+      } else {
+        this.state.fire = "cooldown";
+        console.log("TRY ", this.state.fireCooldown.elapsed);
       }
     }
 

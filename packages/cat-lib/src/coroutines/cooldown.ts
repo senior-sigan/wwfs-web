@@ -1,7 +1,7 @@
 import type { IUpdateable } from "../interfaces/updateable";
 
 export class Cooldown implements IUpdateable {
-  private elapsed = 0;
+  elapsed = 0;
 
   constructor(public time: number) {
     this.elapsed = time;
@@ -9,7 +9,7 @@ export class Cooldown implements IUpdateable {
 
   invoke() {
     if (this.elapsed >= this.time) {
-      this.elapsed -= this.time;
+      this.elapsed = 0;
       return true;
     }
     return false;
