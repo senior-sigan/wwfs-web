@@ -36,9 +36,10 @@ async function main() {
   sceneManager.set("title");
 
   // Listen for animate update
-  app.ticker.add((delta) => {
-    inputs.update(delta);
-    sceneManager.update(delta);
+  app.ticker.add(() => {
+    const dt = app.ticker.deltaMS / 1000; // in seconds
+    inputs.update(dt);
+    sceneManager.update(dt);
   });
 }
 

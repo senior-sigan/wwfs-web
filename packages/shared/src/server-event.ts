@@ -36,11 +36,17 @@ const DisconnectEvent = z.object({
   other: z.string(),
   me: z.string(),
 });
+const CloseEvent = z.object({
+  ev: z.literal("close"),
+  rid: z.string(),
+  me: z.string(),
+});
 export const ServerEvent = z.discriminatedUnion("ev", [
   UpdateEvent,
   DisconnectEvent,
   ConnectionEvent,
   StartedEvent,
+  CloseEvent,
 ]);
 
 export type ConnectionEvent = z.infer<typeof ConnectionEvent>;

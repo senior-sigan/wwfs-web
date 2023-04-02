@@ -20,9 +20,11 @@ const manifest: ResolverManifest = {
     {
       name: "main",
       assets: [
+        { name: "aim", srcs: "textures/aim.png" },
         { name: "pairing_screen", srcs: "textures/pairing_screen.png" },
         { name: "player_good", srcs: "textures/player_good.png" },
 
+        { name: "enemy_ugly_hat", srcs: "textures/hat_ugly.png" },
         { name: "enemy_ugly", srcs: "textures/enemy_ugly.png" },
         { name: "goodHedge", srcs: "textures/goodHedge.png" },
         { name: "goodEnemyHedge", srcs: "textures/goodEnemyHedge.png" },
@@ -39,6 +41,7 @@ const manifest: ResolverManifest = {
           srcs: "textures/lose-screen-american.png",
         },
 
+        { name: "enemy_good_hat", srcs: "textures/hat_good.png" },
         { name: "enemy_good", srcs: "textures/enemy_good.png" },
         { name: "player_ugly", srcs: "textures/player_ugly.png" },
         { name: "uglyHedge", srcs: "textures/uglyHedge.png" },
@@ -110,6 +113,7 @@ export type PlayerPack = {
 export type EnemyPack = {
   up: Sprite;
   shooting: AnimatedSprite;
+  hat: Sprite;
 };
 export type ThemePack = {
   player: PlayerPack;
@@ -155,6 +159,7 @@ function enemySprites(assetName: string): EnemyPack {
       new AnimatedSprite([textures[0], textures[1], textures[0]]),
       (it) => (it.animationSpeed = 0.2)
     ),
+    hat: Sprite.from(`${assetName}_hat`),
   };
 }
 

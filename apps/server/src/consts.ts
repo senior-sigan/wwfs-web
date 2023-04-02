@@ -1,9 +1,10 @@
 export const Balance = {
-  speed: 2000,
-  worldWidth: 100,
-  playerWidth: 10,
-  playerHeight: 30,
-  playerPosY: 300,
+  playerStandingSpeedX: 60,
+  playerCrowlingSpeedX: 10,
+  worldWidth: 1161,
+  playerWidth: 104,
+  playerHeight: 80,
+  playerPosY: 652 - 415 - 80,
   stunTime: 2,
   fireCooldown: 3,
 };

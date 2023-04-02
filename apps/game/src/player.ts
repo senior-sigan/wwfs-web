@@ -1,6 +1,6 @@
 import { Container } from "@pixi/display";
 import { Sprite } from "@pixi/sprite";
-import type { IUpdateable } from "cat-lib";
+import { also, IUpdateable, moveTowards } from "cat-lib";
 import { inputs } from "cat-lib-web";
 import { ThemePack } from "./assets";
 import { UI } from "./consts";
@@ -12,12 +12,17 @@ import { PlayerData } from "shared";
 export class Player implements IUpdateable {
   sprites: Array<Sprite>;
 
+  speedX = 600;
+
   shoot = false;
   standing = true;
   shootTarget = { x: 0, y: 0 };
 
   remote: PlayerData;
   sync = false; // sync this frame. Usefull for sound events...
+  posX: number;
+
+  aim: Sprite;
 
   constructor(public container: Container, private theme: ThemePack) {
     this.sprites = [
@@ -30,6 +35,7 @@ export class Player implements IUpdateable {
     ];
     this.sprites.forEach((s) => {
       s.y = UI.playerY;
+      s.x = 0;
       this.container.addChild(s);
     });
     this.theme.player.crawling.play();
@@ -46,11 +52,19 @@ export class Player implements IUpdateable {
       fire: "",
       theme: "good",
     };
+    this.posX = this.remote.posX;
+
+    this.aim = also(Sprite.from("aim"), (s) => {
+      s.anchor.set(0.5);
+    });
+    this.container.addChild(this.aim);
 
     this.container.eventMode = "static";
     this.container.on("mousedown", (ev) => {
       this.shoot = true;
       this.shootTarget = { x: ev.x, y: ev.y };
+      this.aim.x = ev.x;
+      this.aim.y = ev.y;
     });
   }
 
@@ -60,10 +74,11 @@ export class Player implements IUpdateable {
   }
 
   update(dt: number): void {
-    this.sprites.forEach((s) => (s.visible = false));
+    this.posX = moveTowards(this.posX, this.remote.posX, this.speedX * dt);
 
-    this.sprites.forEach((sprite) => {
-      sprite.x = this.remote.posX;
+    this.sprites.forEach((s) => {
+      s.visible = false;
+      s.x = this.posX;
     });
 
     if (this.sync) {

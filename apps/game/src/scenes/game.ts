@@ -1,6 +1,6 @@
 import { Container } from "@pixi/display";
 import { Sprite } from "@pixi/sprite";
-import { IScene, IUpdateable } from "cat-lib";
+import { IScene, IUpdateable, sceneManager } from "cat-lib";
 import { inputs } from "cat-lib-web";
 import type { ThemePack } from "../assets";
 import { loadThemes } from "../assets";
@@ -86,6 +86,10 @@ class GameUpdater implements IUpdateable {
             this.enemy.onUpdate(remotePlayer);
           }
         });
+      } else if (ev.ev === "disconnect") {
+        sceneManager.set("title"); // GAMEWIN
+      } else if (ev.ev === "close") {
+        sceneManager.set("title"); // GAMEOVER
       }
     });
 

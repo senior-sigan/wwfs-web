@@ -11,12 +11,12 @@ export class Room {
   private lastUpdate: number;
   private timer: NodeJS.Timer;
 
-  constructor(updateTime = 100) {
+  constructor(updateTime: number) {
     this.rid = randomUUID();
     this.players = [];
     this.started = false;
     this.lastUpdate = Date.now();
-    this.timer = setInterval(() => this.update(), updateTime);
+    this.timer = setInterval(() => this.update(), updateTime * 1000);
   }
 
   update() {
@@ -62,14 +62,14 @@ export class Room {
     if (i >= 0 && i < this.players.length) {
       this.players.splice(i);
       this.players.forEach((me) => {
-        player.send({
+        me.send({
           ev: "disconnect",
           rid: this.rid,
           other: player.pid,
           me: me.pid,
         });
       });
-      console.log(`LEFT: pid=${player.pid} rid=${this.rid}`);
+      console.log(`LEFT: rid=${this.rid} pid=${player.pid} `);
     } else {
       console.error(
         `LEFT: player not found. pid=${player.pid} rid=${this.rid}`
@@ -94,6 +94,7 @@ export class Room {
         continue;
       }
 
+      console.log(target, other.bbox);
       if (rectContainsPoint(target, other.bbox)) {
         other.stun();
         player.state.fire = "hit";

@@ -23,7 +23,7 @@ function findOrCreateRoom() {
     }
   }
 
-  const r = new Room();
+  const r = new Room(1 / 30);
   rooms.set(r.rid, r);
   return r;
 }

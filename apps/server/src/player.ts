@@ -1,7 +1,7 @@
 import { MoveEvent, FireEvent, ServerEvent, ThemeName } from "shared";
 import { WebSocket } from "ws";
 import { randomUUID } from "node:crypto";
-import { Rect, Timer, Vec2 } from "cat-lib";
+import { clamp, Rect, Timer, Vec2 } from "cat-lib";
 import { Balance } from "./consts";
 import { Cooldown } from "cat-lib";
 
@@ -69,8 +69,8 @@ export class Player {
     return new Rect(
       this.state.posX,
       Balance.playerPosY,
-      Balance.playerHeight,
-      Balance.playerWidth
+      Balance.playerWidth,
+      Balance.playerHeight
     );
   }
 
@@ -89,8 +89,13 @@ export class Player {
 
       // TODO: limit move event by the maximum distance it's possible to move
       // during this time
-      this.state.posX += ev.dir;
       this.state.standing = ev.standing;
+      if (this.state.standing) {
+        this.state.posX += Balance.playerStandingSpeedX * ev.dir * dt;
+      } else {
+        this.state.posX += Balance.playerCrowlingSpeedX * ev.dir * dt;
+      }
+      this.state.posX = clamp(this.state.posX, 0, Balance.worldWidth);
     }
 
     this.state.fire = "";

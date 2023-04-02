@@ -1,5 +1,7 @@
 export function clamp(v: number, left: number, right: number) {
-  return Math.max(left, Math.min(right, v));
+  const l = Math.min(left, right);
+  const r = Math.max(left, right);
+  return Math.max(l, Math.min(r, v));
 }
 
 export function clamp01(n: number) {
@@ -20,4 +22,9 @@ export function lerp(begin: number, end: number, t: number) {
 
 export function roundCell(x: number, cellSize: number) {
   return Math.round(x / cellSize) * cellSize;
+}
+
+export function moveTowards(begin: number, end: number, speed: number) {
+  const dir = Math.sign(end - begin);
+  return clamp(begin + dir * speed, begin, end);
 }

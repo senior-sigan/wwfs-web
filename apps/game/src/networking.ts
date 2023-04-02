@@ -1,38 +1,42 @@
-import { ClientEvent, PlayerData, ServerEvent, ThemeName } from "shared";
+import { Cooldown } from "cat-lib";
+import { ClientEvent, ServerEvent, ThemeName } from "shared";
 
 class Network {
   private serverEvents: ServerEvent[];
   private clientEvents: ClientEvent[];
-  private elapsed: number;
   private ws: WebSocket | undefined;
 
   public playerTheme: ThemeName;
   public enemyTheme: ThemeName;
+  // TODO: this valuas are lazily set in the pairing screen
+  //   maybe set it here to avoid unmanaged state changes?
   public me: string;
+  public rid: string;
 
-  constructor(private sendInterval = 0.2) {
+  private sendCooldown: Cooldown;
+
+  constructor(sendInterval: number) {
     this.serverEvents = [];
     this.clientEvents = [];
-    this.elapsed = 0;
+    this.sendCooldown = new Cooldown(sendInterval);
     this.ws = undefined;
     this.me = "";
+    this.rid = "";
     this.playerTheme = "good";
     this.enemyTheme = "ugly";
   }
 
   update(dt: number) {
-    this.elapsed += dt;
-    if (this.elapsed >= this.sendInterval) {
-      this.elapsed -= this.sendInterval;
-
+    if (this.sendCooldown.invoke()) {
       const clientEvents = this.clientEvents;
       this.clientEvents = [];
 
       clientEvents.forEach((ev) => {
         this.ws?.send(JSON.stringify(ev));
-        // console.log(ev);
       });
     }
+
+    this.sendCooldown.update(dt);
   }
 
   close() {
@@ -40,7 +44,7 @@ class Network {
     this.ws = undefined;
     this.serverEvents = [];
     this.clientEvents = [];
-    this.elapsed = 0;
+    this.sendCooldown.reset();
   }
 
   send(ev: ClientEvent) {
@@ -78,11 +82,15 @@ class Network {
       }
     };
     ws.onclose = () => {
-      console.log("CLOSE");
-      // TODO: handle!
+      console.log("WS_CLOSE");
+      this.serverEvents.push({
+        ev: "close",
+        me: this.me,
+        rid: this.rid,
+      });
     };
     ws.onopen = () => {
-      console.log("OPEN");
+      console.log("WS_OPEN");
       time = Date.now();
     };
   }
@@ -90,7 +98,7 @@ class Network {
 
 // I use global storage for network to simplify code
 // I hope theuser can only have ONE SINGLE INSTANCE of the game running
-export const networkState: Network = new Network();
+export const networkState: Network = new Network(1 / 30);
 
 function parseEvent(rawData: string) {
   try {

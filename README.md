@@ -40,3 +40,7 @@ To develop all apps and packages, run the following command:
 ```
 pnpm run dev
 ```
+
+
+Vec2 { x: 11, y: 235 } Rect { x: 0, y: 300, w: 80, h: 104 }
+Vec2 { x: 108, y: 168 } Rect { x: 0, y: 300, w: 80, h: 104 }
