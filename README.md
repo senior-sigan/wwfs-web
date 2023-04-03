@@ -19,6 +19,10 @@ This turborepo uses [pnpm](https://pnpm.io) as a package manager. It includes th
 
 Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 
+This application uses [pnpm](https://pnpm.js.org/). You can enable it in nodejs with `corepack enable`.
+
+I recommend install nodejs via [fnm](https://github.com/Schniz/fnm) version manager.
+
 ### Build
 
 To build all apps and packages, run the following command:
@@ -40,7 +44,6 @@ To develop all apps and packages, run the following command:
 ```
 pnpm run dev
 ```
-
 
 Vec2 { x: 11, y: 235 } Rect { x: 0, y: 300, w: 80, h: 104 }
 Vec2 { x: 108, y: 168 } Rect { x: 0, y: 300, w: 80, h: 104 }
