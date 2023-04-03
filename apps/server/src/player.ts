@@ -95,7 +95,11 @@ export class Player {
       } else {
         this.state.posX += Balance.playerCrowlingSpeedX * ev.dir * dt;
       }
-      this.state.posX = clamp(this.state.posX, 0, Balance.worldWidth);
+      this.state.posX = clamp(
+        this.state.posX,
+        Balance.playerMinX,
+        Balance.playerMaxX
+      );
     }
 
     this.state.fire = "";
