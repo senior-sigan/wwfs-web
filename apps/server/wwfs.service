@@ -1,0 +1,19 @@
+[Unit]
+Description=WWFS server
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/wwfs-web/apps/server/dist
+ExecStart=/usr/bin/node index.js
+
+Restart=on-failure
+RestartSec=10
+
+
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=wwfs
+
+[Install]
+WantedBy=multi-user.target
