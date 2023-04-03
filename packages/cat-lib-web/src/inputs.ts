@@ -96,12 +96,15 @@ export class Inputs implements IUpdateable {
       });
       return;
     }
-    const gamepads = navigator.getGamepads();
-    gamepads.forEach((gp) => {
-      if (gp) {
-        this.updateGamepad(gp);
-      }
-    });
+    if (navigator.getGamepads) {
+      // some browsers allow getGamepads only inside a secure scope
+      const gamepads = navigator.getGamepads();
+      gamepads.forEach((gp) => {
+        if (gp) {
+          this.updateGamepad(gp);
+        }
+      });
+    }
   }
 
   debug() {
