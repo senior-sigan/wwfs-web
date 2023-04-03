@@ -63,22 +63,10 @@ export class Player implements IUpdateable {
     this.sync = true;
   }
 
-  update(dt: number): void {
-    this.posX = moveTowards(this.posX, this.remote.posX, this.speedX * dt);
-
-    this.sprites.forEach((s) => {
-      s.visible = false;
-      s.x = this.posX;
-    });
-
-    if (this.sync) {
-      if (this.remote.fire === "hit") {
-        sound.play("shoot");
-      } else if (this.remote.fire === "missed") {
-        sound.play("ricochet");
-      } else if (this.remote.fire === "cooldown") {
-        sound.play("upsClipout");
-      }
+  private handleMove() {
+    if (this.remote.stunned) {
+      this.theme.player.killed.visible = true;
+      return;
     }
 
     let standing = true;
@@ -113,8 +101,10 @@ export class Player implements IUpdateable {
     }
 
     networkState.send({ ev: "move", dir, standing });
+  }
 
-    if (this.shoot === true) {
+  private handleShoot() {
+    if (this.shoot === true && !this.remote.stunned) {
       networkState.send({
         ev: "fire",
         mouseX: this.shootTarget.x,
@@ -122,6 +112,29 @@ export class Player implements IUpdateable {
       });
       this.shoot = false;
     }
+  }
+
+  update(dt: number): void {
+    this.posX = moveTowards(this.posX, this.remote.posX, this.speedX * dt);
+
+    this.sprites.forEach((s) => {
+      s.visible = false;
+      s.x = this.posX;
+    });
+
+    if (this.sync) {
+      if (this.remote.fire === "hit") {
+        sound.play("shoot");
+      } else if (this.remote.fire === "missed") {
+        sound.play("ricochet");
+      } else if (this.remote.fire === "cooldown") {
+        sound.play("upsClipout");
+      }
+    }
+
+    this.handleMove();
+
+    this.handleShoot();
 
     this.sync = false;
   }

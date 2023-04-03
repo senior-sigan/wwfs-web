@@ -68,15 +68,8 @@ class Network {
     const ws = new WebSocket(address);
     this.ws = ws;
 
-    let time = Date.now();
     ws.onmessage = (ev) => {
-      const current = Date.now();
-      const dt = current - time;
-      time = current;
-
-      console.debug(`MSG: dt=${dt} data=${ev.data}`);
       const event = parseEvent(ev.data);
-
       if (event) {
         this.serverEvents.push(event);
       }
@@ -91,7 +84,6 @@ class Network {
     };
     ws.onopen = () => {
       console.log("WS_OPEN");
-      time = Date.now();
     };
   }
 }

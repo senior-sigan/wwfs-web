@@ -109,7 +109,6 @@ export class Room {
     this.players.forEach((player) => {
       const playerState = state.players.filter((p) => p.pid === player.pid)[0];
       const enemyState = state.players.filter((p) => p.pid !== player.pid)[0];
-      console.log(playerState.theme, enemyState.theme);
       player.send({
         ev: "started",
         rid: this.rid,
@@ -136,12 +135,13 @@ export class Room {
   }
 
   private sendState() {
+    const state = this.buildState();
     this.players.forEach((player) => {
       player.send({
         ev: "update",
         rid: this.rid,
         me: player.pid,
-        state: this.buildState(),
+        state,
       });
     });
   }

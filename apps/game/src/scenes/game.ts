@@ -94,6 +94,7 @@ class GameUpdater implements IUpdateable {
   update(dt: number): void {
     networkState.poll((ev) => {
       if (ev.ev === "update") {
+        // console.log(ev.state.players[0].fire, ev.state.players[1].fire);
         ev.state.players.forEach((remotePlayer) => {
           if (remotePlayer.pid === ev.me) {
             this.player.onUpdate(remotePlayer);

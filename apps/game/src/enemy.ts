@@ -1,6 +1,7 @@
 import { Container } from "@pixi/display";
+import { sound } from "@pixi/sound";
 import { Sprite } from "@pixi/sprite";
-import { IUpdateable, moveTowards } from "cat-lib";
+import { IUpdateable, moveTowards, Once } from "cat-lib";
 import { PlayerData } from "shared";
 import { ThemePack } from "./assets";
 import { Hat } from "./hat";
@@ -37,6 +38,16 @@ export class Enemy implements IUpdateable {
 
   onUpdate(remote: PlayerData) {
     this.remote = remote;
+
+    // IT MUST be here because onUpdate could be called twice between update
+    // so we can miss some info, like fire events
+    if (this.remote.fire === "hit") {
+      sound.play("shoot");
+    }
+
+    if (this.remote.fire === "missed") {
+      sound.play("ricochet");
+    }
   }
 
   update(dt: number): void {
