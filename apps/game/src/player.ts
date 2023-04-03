@@ -1,6 +1,6 @@
 import { Container } from "@pixi/display";
 import { Sprite } from "@pixi/sprite";
-import { also, IUpdateable, moveTowards } from "cat-lib";
+import { IUpdateable, moveTowards } from "cat-lib";
 import { inputs } from "cat-lib-web";
 import { ThemePack } from "./assets";
 import { UI } from "./consts";
@@ -21,8 +21,6 @@ export class Player implements IUpdateable {
   remote: PlayerData;
   sync = false; // sync this frame. Usefull for sound events...
   posX: number;
-
-  aim: Sprite;
 
   constructor(public container: Container, private theme: ThemePack) {
     this.sprites = [
@@ -53,19 +51,11 @@ export class Player implements IUpdateable {
       theme: "good",
     };
     this.posX = this.remote.posX;
+  }
 
-    this.aim = also(Sprite.from("aim"), (s) => {
-      s.anchor.set(0.5);
-    });
-    this.container.addChild(this.aim);
-
-    this.container.eventMode = "static";
-    this.container.on("mousedown", (ev) => {
-      this.shoot = true;
-      this.shootTarget = { x: ev.x, y: ev.y };
-      this.aim.x = ev.x;
-      this.aim.y = ev.y;
-    });
+  onShoot(target: { x: number; y: number }) {
+    this.shoot = true;
+    this.shootTarget = target;
   }
 
   onUpdate(remote: PlayerData) {

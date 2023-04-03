@@ -7,6 +7,8 @@ import { PairingScene } from "./scenes/pairing";
 import { TitleScene } from "./scenes/title";
 import { loadAssets } from "./assets";
 import { inputs } from "cat-lib-web";
+import { GameWin } from "./scenes/gamewin";
+import { GameOver } from "./scenes/gameover";
 
 async function main() {
   const app = new Application<HTMLCanvasElement>({
@@ -32,6 +34,8 @@ async function main() {
   // so next screens can use Assets.get without awaits
   sceneManager.put("pairing", new PairingScene(container));
   sceneManager.put("game", new GameScene(container));
+  sceneManager.put("win", new GameWin(container));
+  sceneManager.put("lose", new GameOver(container));
 
   sceneManager.set("title");
 

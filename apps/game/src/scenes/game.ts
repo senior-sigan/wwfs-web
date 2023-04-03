@@ -1,5 +1,6 @@
 import { Container } from "@pixi/display";
-import { IScene, IUpdateable, sceneManager } from "cat-lib";
+import { Sprite } from "@pixi/sprite";
+import { also, IScene, IUpdateable, sceneManager } from "cat-lib";
 import { inputs } from "cat-lib-web";
 import type { ThemePack } from "../assets";
 import { loadThemes } from "../assets";
@@ -18,6 +19,7 @@ export class GameScene implements IScene {
     this.updater = new GameUpdater(this.container);
   }
   exit(): void {
+    this.updater?.exit();
     this.updater = undefined;
     this.container.removeChildren();
   }
@@ -46,6 +48,8 @@ class GameUpdater implements IUpdateable {
   player: Player;
   enemy: Enemy;
 
+  aim: Sprite;
+
   private spriteTweens: Array<readonly [{ y: number }, ParallaxTween]>;
 
   constructor(public container: Container) {
@@ -73,6 +77,18 @@ class GameUpdater implements IUpdateable {
     for (const [sprite, tween] of this.spriteTweens) {
       sprite.y = tween.value;
     }
+
+    this.aim = also(Sprite.from("aim"), (s) => {
+      s.anchor.set(0.5);
+    });
+    this.container.addChild(this.aim);
+
+    this.container.eventMode = "static";
+    this.container.on("mousedown", (ev) => {
+      this.player.onShoot({ x: ev.x, y: ev.y });
+      this.aim.x = ev.x;
+      this.aim.y = ev.y;
+    });
   }
 
   update(dt: number): void {
@@ -86,9 +102,9 @@ class GameUpdater implements IUpdateable {
           }
         });
       } else if (ev.ev === "disconnect") {
-        sceneManager.set("title"); // GAMEWIN
+        sceneManager.set("win");
       } else if (ev.ev === "close") {
-        sceneManager.set("title"); // GAMEOVER
+        sceneManager.set("lose");
       }
     });
 
@@ -102,5 +118,9 @@ class GameUpdater implements IUpdateable {
     this.enemy.update(dt);
 
     networkState.update(dt);
+  }
+
+  exit() {
+    this.container.off("mousedown");
   }
 }
