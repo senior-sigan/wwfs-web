@@ -1,5 +1,4 @@
 import { Container } from "@pixi/display";
-import { Sprite } from "@pixi/sprite";
 import { IScene, IUpdateable, sceneManager } from "cat-lib";
 import { inputs } from "cat-lib-web";
 import type { ThemePack } from "../assets";
