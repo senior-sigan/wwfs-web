@@ -1,7 +1,7 @@
 import { Container } from "@pixi/display";
 import { sound } from "@pixi/sound";
 import { Sprite } from "@pixi/sprite";
-import { IUpdateable, moveTowards, Once } from "cat-lib";
+import { IUpdateable, moveTowards } from "cat-lib";
 import { PlayerData } from "shared";
 import { ThemePack } from "./assets";
 import { Hat } from "./hat";
