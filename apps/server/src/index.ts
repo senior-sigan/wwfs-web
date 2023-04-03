@@ -3,7 +3,7 @@ import { Player } from "./player";
 import { Room } from "./room";
 import { ClientEvent, themeNames } from "shared";
 
-const wss = new WebSocketServer({ port: 3001 });
+const wss = new WebSocketServer({ port: 3001, path: "/api", host: "0.0.0.0" });
 const rooms: Map<string, Room> = new Map();
 
 function joinRoom(room: Room, ws: WebSocket): Player {

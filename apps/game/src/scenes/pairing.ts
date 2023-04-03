@@ -3,6 +3,14 @@ import { Sprite } from "@pixi/sprite";
 import { IScene, sceneManager } from "cat-lib";
 import { networkState } from "../networking";
 
+function getHost() {
+  const hn = window.location.hostname;
+  if (hn === "localhost" || hn === "127.0.0.1") {
+    return "localhost:3001";
+  }
+  return hn;
+}
+
 export class PairingScene implements IScene {
   ws: WebSocket | undefined;
 
@@ -11,7 +19,8 @@ export class PairingScene implements IScene {
   }
 
   activate(): void {
-    networkState.reconnect("ws://localhost:3001");
+    const host = getHost();
+    networkState.reconnect(`ws://${host}/api`);
     this.container.addChild(Sprite.from("pairing_screen"));
   }
   exit(): void {
