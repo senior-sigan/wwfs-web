@@ -29,6 +29,9 @@ async function main() {
   container.y = 0;
   app.stage.addChild(container);
 
+  app.renderer.events.cursorStyles.default =
+    "url('assets/textures/aim.png') 32 32,auto";
+
   sceneManager.put("title", new TitleScene(container));
   // supposing TitleScreen loads all the assets
   // so next screens can use Assets.get without awaits

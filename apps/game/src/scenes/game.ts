@@ -1,6 +1,5 @@
 import { Container } from "@pixi/display";
-import { Sprite } from "@pixi/sprite";
-import { also, IScene, IUpdateable, sceneManager } from "cat-lib";
+import { IScene, IUpdateable, also, sceneManager } from "cat-lib";
 import { inputs } from "cat-lib-web";
 import type { ThemePack } from "../assets";
 import { loadThemes } from "../assets";
@@ -9,6 +8,9 @@ import { Enemy } from "../enemy";
 import { networkState } from "../networking";
 import { ParallaxTween } from "../parallax";
 import { Player } from "../player";
+import { ProgressBar } from "../hud/progress-bar";
+import { WaterBar } from "../hud/water-bar";
+import { Plants } from "../hud/plants";
 
 export class GameScene implements IScene {
   updater: GameUpdater | undefined;
@@ -47,8 +49,9 @@ class GameUpdater implements IUpdateable {
   theme: ThemePack;
   player: Player;
   enemy: Enemy;
-
-  aim: Sprite;
+  progressBar: ProgressBar;
+  waterBar: WaterBar;
+  plants: Plants;
 
   private spriteTweens: Array<readonly [{ y: number }, ParallaxTween]>;
 
@@ -78,16 +81,19 @@ class GameUpdater implements IUpdateable {
       sprite.y = tween.value;
     }
 
-    this.aim = also(Sprite.from("aim"), (s) => {
-      s.anchor.set(0.5);
-    });
-    this.container.addChild(this.aim);
+    this.plants = new Plants(this.container, this.theme.plant);
+    this.container.addChild(
+      also(this.theme.pump, (p) => {
+        p.x = UI.pumpPosition.x;
+        p.y = UI.pumpPosition.y;
+      })
+    );
+    this.progressBar = new ProgressBar(this.container, this.theme.progressBar);
+    this.waterBar = new WaterBar(this.container, this.theme.waterBar);
 
     this.container.eventMode = "static";
     this.container.on("mousedown", (ev) => {
       this.player.onShoot({ x: ev.x, y: ev.y });
-      this.aim.x = ev.x;
-      this.aim.y = ev.y;
     });
   }
 

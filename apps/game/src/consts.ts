@@ -29,13 +29,13 @@ export const UI = {
 
   enemyUpPhysWH: [80, 96] as const,
 
-  pumpPosition: [58, 14] as const,
+  pumpPosition: { x: 58, y: 320 } as const,
   pumpEpsilon: 10,
 
-  plantPos: [900, 9] as const,
+  plantPos: { x: 820, y: 150 } as const,
   plantEpsilon: 10,
 
   hatSpeed: 600,
-  upbarPos: [0, 581] as const,
-  waterbarPos: [14, 14] as const,
+  upbarPos: { x: 0, y: 0 } as const,
+  waterbarPos: { x: 14, y: 370 } as const,
 };

@@ -40,6 +40,7 @@ const manifest: ResolverManifest = {
           name: "lose-screen-american",
           srcs: "textures/lose-screen-american.png",
         },
+        { name: "upbarUgly", srcs: "textures/upbar_ugly.png" },
 
         { name: "enemy_good_hat", srcs: "textures/hat_good.png" },
         { name: "enemy_good", srcs: "textures/enemy_good.png" },
@@ -58,6 +59,10 @@ const manifest: ResolverManifest = {
           name: "lose-screen-mexico",
           srcs: "textures/lose-screen-mexico.png",
         },
+        { name: "upbarGood", srcs: "textures/upbar_good.png" },
+
+        { name: "waterPump", srcs: "textures/water_pump.png" },
+        { name: "waterBar", srcs: "textures/waterbar.png" },
         { name: "ground", srcs: "textures/myGround.png" },
         { name: "road", srcs: "textures/road.png" },
         { name: "sky", srcs: "textures/sky.png" },
@@ -127,6 +132,9 @@ export type ThemePack = {
   ground: Sprite;
   road: Sprite;
   sky: Sprite;
+  progressBar: Sprite;
+  pump: Sprite;
+  waterBar: Sprite;
 };
 
 function playerSprites(assetName: string): PlayerPack {
@@ -177,6 +185,9 @@ export function loadThemes(): Record<ThemeName, ThemePack> {
       ground: Sprite.from("ground"),
       road: Sprite.from("road"),
       sky: Sprite.from("sky"),
+      progressBar: Sprite.from("upbarGood"),
+      pump: Sprite.from("waterPump"),
+      waterBar: Sprite.from("waterBar"),
     },
     ugly: {
       player: playerSprites("player_ugly"),
@@ -194,6 +205,9 @@ export function loadThemes(): Record<ThemeName, ThemePack> {
       ground: Sprite.from("ground"),
       road: Sprite.from("road"),
       sky: Sprite.from("sky"),
+      progressBar: Sprite.from("upbarUgly"),
+      pump: Sprite.from("waterPump"),
+      waterBar: Sprite.from("waterBar"),
     },
   };
 }
