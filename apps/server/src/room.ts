@@ -1,4 +1,4 @@
-import { clamp, Cooldown, rectContainsPoint, Vec2 } from "cat-lib";
+import { clamp, rectContainsPoint, Vec2 } from "cat-lib";
 import { randomUUID } from "node:crypto";
 import { type Player } from "./player";
 
@@ -94,8 +94,11 @@ export class Room {
         continue;
       }
 
-      console.log(target, other.bbox);
-      if (rectContainsPoint(target, other.bbox)) {
+      if (
+        rectContainsPoint(target, other.bbox) &&
+        other.state.standing &&
+        !other.stunned
+      ) {
         other.stun();
         player.state.fire = "hit";
       } else {
