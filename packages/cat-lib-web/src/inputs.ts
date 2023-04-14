@@ -7,8 +7,18 @@ function gpid(gp: Gamepad) {
 export class Inputs implements IUpdateable {
   private pressedButtons: Map<string, Set<string>> = new Map();
 
+  private reset() {
+    this.pressedButtons.forEach((v) => v.clear());
+  }
+
   connect() {
     this.pressedButtons.set("keyboard", new Set());
+
+    window.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "hidden") {
+        this.reset();
+      }
+    });
 
     window.addEventListener("keyup", (ev) => {
       this.updateKeyboard(ev.code, false);
