@@ -81,15 +81,24 @@ class GameUpdater implements IUpdateable {
       sprite.y = tween.value;
     }
 
-    this.plants = new Plants(this.container, this.theme.plant);
+    this.plants = new Plants(this.container, this.theme.plant, this.player);
     this.container.addChild(
       also(this.theme.pump, (p) => {
         p.x = UI.pumpPosition.x;
         p.y = UI.pumpPosition.y;
       })
     );
-    this.progressBar = new ProgressBar(this.container, this.theme.progressBar);
-    this.waterBar = new WaterBar(this.container, this.theme.waterBar);
+    this.progressBar = new ProgressBar(
+      this.container,
+      this.theme.progressBar,
+      this.player,
+      this.enemy
+    );
+    this.waterBar = new WaterBar(
+      this.container,
+      this.theme.waterBar,
+      this.player
+    );
 
     this.container.eventMode = "static";
     this.container.on("mousedown", (ev) => {
@@ -123,6 +132,9 @@ class GameUpdater implements IUpdateable {
 
     this.player.update(dt);
     this.enemy.update(dt);
+    this.progressBar.update(dt);
+    this.waterBar.update(dt);
+    this.plants.update(dt);
 
     networkState.update(dt);
   }

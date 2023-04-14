@@ -1,12 +1,16 @@
 import { Container } from "@pixi/display";
 import { Sprite } from "@pixi/sprite";
-import { IUpdateable } from "cat-lib";
+import { IUpdateable, clamp } from "cat-lib";
 import { UI } from "../consts";
+import type { PlayerState } from "../player";
+import { Balance } from "shared";
 
 export class Plants implements IUpdateable {
-  private sprites: Sprite[];
-
-  constructor(public container: Container, sprites: Sprite[]) {
+  constructor(
+    private container: Container,
+    private sprites: Sprite[],
+    private player: PlayerState
+  ) {
     this.sprites = sprites;
     sprites.forEach((sprite) => {
       this.container.addChild(sprite);
@@ -18,7 +22,15 @@ export class Plants implements IUpdateable {
     this.sprites[0].visible = true;
   }
 
-  update(dt: number): void {
-    // TODO: draw water level
+  update(_dt: number): void {
+    // TODO: draw water
+    const lvl = clamp(
+      Math.floor(this.player.remote.plantLevel / Balance.plantGrowStep),
+      0,
+      this.sprites.length - 1
+    );
+    this.sprites.forEach((sprite, i) => {
+      sprite.visible = i === lvl;
+    });
   }
 }

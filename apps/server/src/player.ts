@@ -1,8 +1,7 @@
-import { MoveEvent, FireEvent, ServerEvent, ThemeName } from "shared";
+import { MoveEvent, FireEvent, ServerEvent, ThemeName, Balance } from "shared";
 import { WebSocket } from "ws";
 import { randomUUID } from "node:crypto";
 import { clamp, Rect, Timer, Vec2 } from "cat-lib";
-import { Balance } from "./consts";
 import { Cooldown } from "cat-lib";
 
 export class Player {
@@ -116,6 +115,33 @@ export class Player {
         console.log("TRY ", this.state.fireCooldown.elapsed);
       }
     }
+
+    if (!this.state.standing && !this.stunned) {
+      const offset = 8; // just some small offset when the area trigers
+      if (this.state.posX <= Balance.playerMinX + offset) {
+        this.state.waterLevel = clamp(
+          this.state.waterLevel + Balance.waterInSpeed * dt,
+          0,
+          Balance.bucketVolume
+        );
+      }
+      if (this.state.posX >= Balance.playerMaxX - offset) {
+        const dWater = Balance.waterOutSpeed * dt;
+        const waterGot = clamp(dWater, 0, this.state.waterLevel);
+        this.state.waterLevel = clamp(
+          this.state.waterLevel - waterGot,
+          0,
+          Balance.bucketVolume
+        );
+        this.state.plantLevel = clamp(
+          this.state.plantLevel + waterGot,
+          0,
+          Balance.plantVolume
+        );
+      }
+    }
+
+    // TODO: detect game win
 
     this.state.fireCooldown.update(dt);
     this.state.stunTimer.update(dt);

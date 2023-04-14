@@ -9,7 +9,11 @@ import { sound } from "@pixi/sound";
 import { networkState } from "./networking";
 import { PlayerData } from "shared";
 
-export class Player implements IUpdateable {
+export interface PlayerState {
+  remote: PlayerData;
+}
+
+export class Player implements IUpdateable, PlayerState {
   sprites: Array<Sprite>;
 
   speedX = 600;
@@ -42,7 +46,7 @@ export class Player implements IUpdateable {
 
     this.remote = {
       pid: "",
-      posX: 0,
+      posX: 40,
       standing: true,
       waterLevel: 0,
       plantLevel: 0,
@@ -54,6 +58,7 @@ export class Player implements IUpdateable {
   }
 
   onShoot(target: { x: number; y: number }) {
+    // TODO: remap coordinates
     this.shoot = true;
     this.shootTarget = target;
   }

@@ -6,7 +6,11 @@ import { PlayerData } from "shared";
 import { ThemePack } from "./assets";
 import { Hat } from "./hat";
 
-export class Enemy implements IUpdateable {
+export interface EnemyState {
+  remote: PlayerData;
+}
+
+export class Enemy implements IUpdateable, EnemyState {
   remote: PlayerData;
   sprites: Sprite[];
   hat: Hat;
@@ -16,9 +20,10 @@ export class Enemy implements IUpdateable {
   x: number;
 
   constructor(public container: Container, private theme: ThemePack) {
+    // TODO: remap coordinates
     this.remote = {
       pid: "",
-      posX: 0,
+      posX: 40,
       standing: true,
       waterLevel: 0,
       plantLevel: 0,
@@ -26,7 +31,7 @@ export class Enemy implements IUpdateable {
       fire: "",
       theme: "ugly",
     };
-    this.y = 0;
+    this.y = 40;
     this.x = this.remote.posX;
 
     this.sprites = [this.theme.enemy.up, this.theme.enemy.shooting];

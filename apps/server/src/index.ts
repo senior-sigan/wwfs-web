@@ -1,7 +1,7 @@
 import { RawData, WebSocket, WebSocketServer } from "ws";
 import { Player } from "./player";
 import { Room } from "./room";
-import { ClientEvent, ClientPackage, themeNames } from "shared";
+import { ClientPackage, themeNames } from "shared";
 
 const wss = new WebSocketServer({ port: 3001, path: "/api", host: "0.0.0.0" });
 const rooms: Map<string, Room> = new Map();
