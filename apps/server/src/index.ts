@@ -1,7 +1,7 @@
 import { RawData, WebSocket, WebSocketServer } from "ws";
 import { Player } from "./player";
 import { Room } from "./room";
-import { ClientEvent, themeNames } from "shared";
+import { ClientEvent, ClientPackage, themeNames } from "shared";
 
 const wss = new WebSocketServer({ port: 3001, path: "/api", host: "0.0.0.0" });
 const rooms: Map<string, Room> = new Map();
@@ -30,11 +30,11 @@ function findOrCreateRoom() {
 
 function parseEvent(rawData: RawData) {
   try {
-    return ClientEvent.parse(JSON.parse(rawData.toString("utf8")));
+    return ClientPackage.parse(JSON.parse(rawData.toString("utf8")));
   } catch (err) {
     console.error("Cannot parse ev");
   }
-  return undefined;
+  return [];
 }
 
 wss.on("connection", (ws) => {
@@ -48,15 +48,15 @@ wss.on("connection", (ws) => {
   });
 
   ws.on("message", (rawData) => {
-    const data = parseEvent(rawData);
-    if (data) {
-      if (data.ev === "move") {
-        player.onMove(data);
+    const messages = parseEvent(rawData);
+    messages.forEach((msg) => {
+      if (msg.ev === "move") {
+        player.onMove(msg);
       }
-      if (data.ev === "fire") {
-        player.onFire(data);
+      if (msg.ev === "fire") {
+        player.onFire(msg);
       }
-    }
+    });
   });
 
   ws.on("close", () => {

@@ -1,6 +1,6 @@
 export const Balance = {
-  playerStandingSpeedX: 60,
-  playerCrowlingSpeedX: 10,
+  playerStandingSpeedX: 200,
+  playerCrowlingSpeedX: 75,
   worldWidth: 1161,
   playerMinX: 0,
   playerMaxX: 1161 - 320,

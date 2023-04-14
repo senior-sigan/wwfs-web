@@ -4,6 +4,7 @@ const MoveEvent = z.object({
   ev: z.literal("move"),
   dir: z.number(),
   standing: z.boolean(),
+  dt: z.number(),
 });
 const FireEvent = z.object({
   ev: z.literal("fire"),
@@ -12,6 +13,9 @@ const FireEvent = z.object({
 });
 export const ClientEvent = z.discriminatedUnion("ev", [MoveEvent, FireEvent]);
 
+export const ClientPackage = z.array(ClientEvent);
+
 export type MoveEvent = z.infer<typeof MoveEvent>;
 export type FireEvent = z.infer<typeof FireEvent>;
 export type ClientEvent = z.infer<typeof ClientEvent>;
+export type ClientPackage = z.infer<typeof ClientPackage>;

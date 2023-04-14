@@ -31,9 +31,7 @@ class Network {
       const clientEvents = this.clientEvents;
       this.clientEvents = [];
 
-      clientEvents.forEach((ev) => {
-        this.ws?.send(JSON.stringify(ev));
-      });
+      this.ws?.send(JSON.stringify(clientEvents));
     }
 
     this.sendCooldown.update(dt);

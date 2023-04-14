@@ -63,7 +63,7 @@ export class Player implements IUpdateable {
     this.sync = true;
   }
 
-  private handleMove() {
+  private handleMove(dt: number) {
     if (this.remote.stunned) {
       this.theme.player.killed.visible = true;
       return;
@@ -100,7 +100,7 @@ export class Player implements IUpdateable {
       }
     }
 
-    networkState.send({ ev: "move", dir, standing });
+    networkState.send({ ev: "move", dir, standing, dt });
   }
 
   private handleShoot() {
@@ -132,7 +132,7 @@ export class Player implements IUpdateable {
       }
     }
 
-    this.handleMove();
+    this.handleMove(dt);
 
     this.handleShoot();
 

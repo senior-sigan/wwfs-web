@@ -89,11 +89,12 @@ export class Player {
 
       // TODO: limit move event by the maximum distance it's possible to move
       // during this time
+      // TODO: substruct ev.dt from server side dt???? To avoid cheating
       this.state.standing = ev.standing;
       if (this.state.standing) {
-        this.state.posX += Balance.playerStandingSpeedX * ev.dir * dt;
+        this.state.posX += Balance.playerStandingSpeedX * ev.dir * ev.dt;
       } else {
-        this.state.posX += Balance.playerCrowlingSpeedX * ev.dir * dt;
+        this.state.posX += Balance.playerCrowlingSpeedX * ev.dir * ev.dt;
       }
       this.state.posX = clamp(
         this.state.posX,
