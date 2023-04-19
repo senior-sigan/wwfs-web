@@ -1,10 +1,11 @@
 import { Container } from "@pixi/display";
 import { sound } from "@pixi/sound";
 import { Sprite } from "@pixi/sprite";
-import { IUpdateable, moveTowards } from "cat-lib";
+import { also, IUpdateable, moveTowards } from "cat-lib";
 import { PlayerData } from "shared";
 import { ThemePack } from "./assets";
 import { Hat } from "./hat";
+import { TextStyle, Text } from "@pixi/text";
 
 export interface EnemyState {
   remote: PlayerData;
@@ -19,6 +20,8 @@ export class Enemy implements IUpdateable, EnemyState {
   y: number; // draw y
   x: number;
 
+  private scoreText: Text;
+
   constructor(public container: Container, private theme: ThemePack) {
     // TODO: remap coordinates
     this.remote = {
@@ -30,6 +33,7 @@ export class Enemy implements IUpdateable, EnemyState {
       stunned: false,
       fire: "",
       theme: "ugly",
+      score: 0,
     };
     this.y = 40;
     this.x = this.remote.posX;
@@ -39,6 +43,19 @@ export class Enemy implements IUpdateable, EnemyState {
       this.container.addChild(s);
     });
     this.hat = new Hat(container, this.theme.enemy.hat);
+
+    const style = new TextStyle({
+      fontFamily: "Arial",
+      fontSize: 36,
+      fontWeight: "bold",
+      fill: "#5c5567d9",
+    });
+    this.scoreText = also(new Text("0", style), (it) => {
+      it.x = 680;
+      it.y = 10;
+
+      this.container.addChild(it);
+    });
   }
 
   onUpdate(remote: PlayerData) {
@@ -56,6 +73,8 @@ export class Enemy implements IUpdateable, EnemyState {
   }
 
   update(dt: number): void {
+    this.scoreText.text = this.remote.score.toString();
+
     this.x = moveTowards(this.x, this.remote.posX, this.speedX * dt);
 
     this.hat.x = this.x;

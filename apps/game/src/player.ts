@@ -1,6 +1,6 @@
 import { Container } from "@pixi/display";
 import { Sprite } from "@pixi/sprite";
-import { IUpdateable, moveTowards } from "cat-lib";
+import { also, IUpdateable, moveTowards } from "cat-lib";
 import { inputs } from "cat-lib-web";
 import { ThemePack } from "./assets";
 import { UI } from "./consts";
@@ -8,6 +8,7 @@ import "@pixi/events";
 import { sound } from "@pixi/sound";
 import { networkState } from "./networking";
 import { Balance, PlayerData } from "shared";
+import { TextStyle, Text } from "@pixi/text";
 
 export interface PlayerState {
   remote: PlayerData;
@@ -25,6 +26,8 @@ export class Player implements IUpdateable, PlayerState {
   remote: PlayerData;
   sync = false; // sync this frame. Usefull for sound events...
   posX: number;
+
+  private scoreText: Text;
 
   constructor(public container: Container, private theme: ThemePack) {
     this.sprites = [
@@ -53,8 +56,22 @@ export class Player implements IUpdateable, PlayerState {
       stunned: false,
       fire: "",
       theme: "good",
+      score: 0,
     };
     this.posX = this.remote.posX;
+
+    const style = new TextStyle({
+      fontFamily: "Arial",
+      fontSize: 36,
+      fontWeight: "bold",
+      fill: "#5c5567d9",
+    });
+    this.scoreText = also(new Text("0", style), (it) => {
+      it.x = 450;
+      it.y = 10;
+
+      this.container.addChild(it);
+    });
   }
 
   onShoot(target: { x: number; y: number }) {
@@ -120,6 +137,8 @@ export class Player implements IUpdateable, PlayerState {
   }
 
   update(dt: number): void {
+    this.scoreText.text = this.remote.score.toString();
+
     this.posX = moveTowards(this.posX, this.remote.posX, this.speedX * dt);
 
     this.sprites.forEach((s) => {

@@ -15,6 +15,7 @@ export class Player {
     fireCooldown: Cooldown;
     fire: "hit" | "missed" | "cooldown" | "";
     theme: "ugly" | "good";
+    score: number;
   };
   private moveEvents: Array<MoveEvent>;
   private fireEvents: Array<FireEvent>;
@@ -40,6 +41,7 @@ export class Player {
       fireCooldown: new Cooldown(Balance.fireCooldown),
       fire: "",
       theme: theme,
+      score: 0,
     };
   }
 

@@ -14,6 +14,7 @@ const PlayerData = z.object({
   stunned: z.boolean(),
   fire: z.enum(["hit", "missed", "cooldown", ""]),
   theme: z.enum(["good", "ugly"]),
+  score: z.number(),
 });
 const StartedEvent = z.object({
   ev: z.literal("started"),

@@ -7,7 +7,7 @@ export const UI = {
   enemyBackYRange: [652 - 336 - 100, 652 - 336 - 175],
   enemyBackParallaxSpeed: 500,
 
-  myHedgeYRange: [652 - 320 + 31, 652 - 320 - 87],
+  myHedgeYRange: [652 - 320 + 20, 652 - 320 - 87],
   myHedgeParallaxSpeed: 1100,
 
   groundYRange: [652 - 416 + 47, 652 - 416],
@@ -41,7 +41,7 @@ export const UI = {
   upBarMyPos: { x: 80, y: 34 },
   upBarEnemyPos: { x: 816, y: 34 },
 
-  waterbarPos: { x: 14, y: 370 },
+  waterbarPos: { x: 14, y: 355 },
   waterBarSize: { w: 24, h: 244 },
   waterColor: 0x1a7ad4,
 } as const;

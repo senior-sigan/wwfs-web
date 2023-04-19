@@ -121,6 +121,7 @@ export class Room {
         !other.stunned
       ) {
         other.stun();
+        player.state.score += 1;
         player.state.fire = "hit";
       } else {
         player.state.fire = "missed";
@@ -154,6 +155,7 @@ export class Room {
         stunned: !player.state.stunTimer.isPassed,
         fire: player.state.fire,
         theme: player.state.theme,
+        score: player.state.score,
       })),
     };
   }

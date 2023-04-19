@@ -43,6 +43,9 @@ importers:
       '@pixi/sprite-animated':
         specifier: ^7.2.4
         version: 7.2.4(@pixi/core@7.2.4)(@pixi/sprite@7.2.4)
+      '@pixi/text':
+        specifier: ^7.2.4
+        version: 7.2.4(@pixi/core@7.2.4)(@pixi/sprite@7.2.4)
       cat-lib:
         specifier: workspace:*
         version: link:../../packages/cat-lib
@@ -1037,6 +1040,16 @@ packages:
     dependencies:
       '@pixi/core': 7.2.4
       '@pixi/display': 7.2.4(@pixi/core@7.2.4)
+    dev: false
+
+  /@pixi/text@7.2.4(@pixi/core@7.2.4)(@pixi/sprite@7.2.4):
+    resolution: {integrity: sha512-DGu7ktpe+zHhqR2sG9NsJt4mgvSObv5EqXTtUxD4Z0li1gmqF7uktpLyn5I6vSg1TTEL4TECClRDClVDGiykWw==}
+    peerDependencies:
+      '@pixi/core': 7.2.4
+      '@pixi/sprite': 7.2.4
+    dependencies:
+      '@pixi/core': 7.2.4
+      '@pixi/sprite': 7.2.4(@pixi/core@7.2.4)(@pixi/display@7.2.4)
     dev: false
 
   /@pixi/ticker@7.2.4:
