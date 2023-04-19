@@ -57,6 +57,7 @@ export class Player implements IUpdateable, PlayerState {
       fire: "",
       theme: "good",
       score: 0,
+      water: "",
     };
     this.posX = this.remote.posX;
 
@@ -153,6 +154,15 @@ export class Player implements IUpdateable, PlayerState {
         sound.play("ricochet");
       } else if (this.remote.fire === "cooldown") {
         sound.play("upsClipout");
+      }
+
+      if (this.remote.water === "in") {
+        sound.volume("water_in", 1);
+      } else if (this.remote.water === "out") {
+        sound.volume("water_out", 1);
+      } else {
+        sound.volume("water_in", 0);
+        sound.volume("water_out", 0);
       }
     }
 

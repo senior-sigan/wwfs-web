@@ -13,6 +13,7 @@ const PlayerData = z.object({
   plantLevel: z.number(),
   stunned: z.boolean(),
   fire: z.enum(["hit", "missed", "cooldown", ""]),
+  water: z.enum(["in", "out", ""]),
   theme: z.enum(["good", "ugly"]),
   score: z.number(),
 });

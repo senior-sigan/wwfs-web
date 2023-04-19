@@ -156,6 +156,7 @@ export class Room {
         fire: player.state.fire,
         theme: player.state.theme,
         score: player.state.score,
+        water: player.state.water,
       })),
     };
   }

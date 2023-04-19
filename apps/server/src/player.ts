@@ -14,6 +14,7 @@ export class Player {
     stunTimer: Timer;
     fireCooldown: Cooldown;
     fire: "hit" | "missed" | "cooldown" | "";
+    water: "in" | "out" | "";
     theme: "ugly" | "good";
     score: number;
   };
@@ -42,6 +43,7 @@ export class Player {
       fire: "",
       theme: theme,
       score: 0,
+      water: "",
     };
   }
 
@@ -120,6 +122,7 @@ export class Player {
       }
     }
 
+    this.state.water = "";
     if (!this.state.standing && !this.stunned) {
       const offset = 8; // just some small offset when the area trigers
       if (this.state.posX <= Balance.playerMinX + offset) {
@@ -128,10 +131,16 @@ export class Player {
           0,
           Balance.bucketVolume
         );
+        if (this.state.waterLevel < Balance.bucketVolume) {
+          this.state.water = "in";
+        }
       }
       if (this.state.posX >= Balance.playerMaxX - offset) {
         const dWater = Balance.waterOutSpeed * dt;
         const waterGot = clamp(dWater, 0, this.state.waterLevel);
+        if (waterGot > 0) {
+          this.state.water = "out";
+        }
         this.state.waterLevel = clamp(
           this.state.waterLevel - waterGot,
           0,
@@ -144,8 +153,6 @@ export class Player {
         );
       }
     }
-
-    // TODO: detect game win
 
     this.state.fireCooldown.update(dt);
     this.state.stunTimer.update(dt);

@@ -89,15 +89,26 @@ function splitTexture(assetName: string, width: number, height: number) {
 }
 
 function loadSound() {
-  sound.add({
-    bgm: "assets/sound/bgm.mp3",
-    ricochet: "assets/sound/ricochet.mp3",
-    shoot: "assets/sound/shoot.mp3",
-    upsClipout: "assets/sound/ups_clipout.mp3",
-    vodaIzVedra: "assets/sound/voda_iz_vedra.mp3",
-    vodaV: "assets/sound/water_in.mp3",
-  });
-  // sound.play("bgm");
+  sound.add(
+    {
+      bgm: "assets/sound/bgm.mp3",
+      ricochet: "assets/sound/ricochet.mp3",
+      shoot: "assets/sound/shoot.mp3",
+      upsClipout: "assets/sound/ups_clipout.mp3",
+      water_out: "assets/sound/voda_iz_vedra.mp3",
+      water_in: "assets/sound/water_in.mp3",
+    },
+    {
+      preload: true,
+    }
+  );
+  sound.play("bgm", { loop: true, volume: 0.2 });
+
+  sound.play("water_out", { loop: true });
+  sound.volume("water_out", 0);
+
+  sound.play("water_in", { loop: true });
+  sound.volume("water_in", 0);
 }
 
 export async function loadAssets() {

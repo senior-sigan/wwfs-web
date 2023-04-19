@@ -34,6 +34,7 @@ export class Enemy implements IUpdateable, EnemyState {
       fire: "",
       theme: "ugly",
       score: 0,
+      water: "",
     };
     this.y = 40;
     this.x = this.remote.posX;
