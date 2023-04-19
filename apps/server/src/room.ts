@@ -28,9 +28,30 @@ export class Room {
       return;
     }
 
+    let anyWin = false;
     for (const player of this.players) {
       player.update(dt);
+      anyWin = player.win || anyWin;
     }
+
+    if (anyWin) {
+      for (const player of this.players) {
+        if (player.win) {
+          player.send({
+            ev: "win",
+            me: player.pid,
+            rid: this.rid,
+          });
+        } else {
+          player.send({
+            ev: "lose",
+            me: player.pid,
+            rid: this.rid,
+          });
+        }
+      }
+    }
+
     for (const player of this.players) {
       while (player.fireCommands.length > 0) {
         const cmd = player.fireCommands.pop();

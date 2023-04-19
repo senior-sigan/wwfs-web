@@ -64,6 +64,10 @@ export class Player {
     return !this.state.stunTimer.isPassed;
   }
 
+  get win() {
+    return this.state.plantLevel >= Balance.plantVolume;
+  }
+
   get bbox() {
     return new Rect(
       this.state.posX,

@@ -9,9 +9,9 @@ export const Balance = {
   playerPosY: 652 - 415 - 80,
   stunTime: 2,
   fireCooldown: 3,
-  bucketVolume: 100,
+  bucketVolume: 99,
   waterInSpeed: 40,
   waterOutSpeed: 120,
-  plantVolume: 350,
+  plantVolume: 99 * 3 + 49,
   plantGrowStep: 100,
 } as const;

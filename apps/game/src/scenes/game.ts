@@ -121,6 +121,10 @@ class GameUpdater implements IUpdateable {
         sceneManager.set("win");
       } else if (ev.ev === "close") {
         sceneManager.set("lose");
+      } else if (ev.ev === "win") {
+        sceneManager.set("win");
+      } else if (ev.ev === "lose") {
+        sceneManager.set("lose");
       }
     });
 

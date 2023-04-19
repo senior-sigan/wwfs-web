@@ -35,9 +35,8 @@ export class PairingScene implements IScene {
         networkState.enemyTheme = ev.enemy.theme;
         networkState.me = ev.me;
         networkState.rid = ev.rid;
-      }
-      if (ev.ev === "connection") {
-        console.log("Waiting for players...");
+      } else {
+        console.log(ev);
       }
     });
   }

@@ -41,12 +41,24 @@ const CloseEvent = z.object({
   rid: z.string(),
   me: z.string(),
 });
+const WinEvent = z.object({
+  ev: z.literal("win"),
+  rid: z.string(),
+  me: z.string(),
+});
+const LoseEvent = z.object({
+  ev: z.literal("lose"),
+  rid: z.string(),
+  me: z.string(),
+});
 export const ServerEvent = z.discriminatedUnion("ev", [
   UpdateEvent,
   DisconnectEvent,
   ConnectionEvent,
   StartedEvent,
   CloseEvent,
+  WinEvent,
+  LoseEvent,
 ]);
 
 export type ConnectionEvent = z.infer<typeof ConnectionEvent>;
@@ -54,5 +66,7 @@ export type StartedEvent = z.infer<typeof StartedEvent>;
 export type UpdateEvent = z.infer<typeof UpdateEvent>;
 export type DisconnectEvent = z.infer<typeof DisconnectEvent>;
 export type ServerEvent = z.infer<typeof ServerEvent>;
+export type WinEvent = z.infer<typeof WinEvent>;
+export type LoseEvent = z.infer<typeof LoseEvent>;
 
 export type PlayerData = z.infer<typeof PlayerData>;
