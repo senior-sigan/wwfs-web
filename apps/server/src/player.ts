@@ -78,33 +78,31 @@ export class Player {
   }
 
   update(dt: number) {
-    // TODO: dummy network sync approach
-    //  - beleive that client is not cheating by sending to many moveEvents
-
     if (this.stunned) {
       this.moveEvents = [];
       this.fireEvents = [];
     }
 
+    let dir = 0;
+
     while (this.moveEvents.length > 0) {
       const ev = this.moveEvents.pop();
       if (!ev) break;
 
-      // TODO: limit move event by the maximum distance it's possible to move
-      // during this time
-      // TODO: substruct ev.dt from server side dt???? To avoid cheating
       this.state.standing = ev.standing;
-      if (this.state.standing) {
-        this.state.posX += Balance.playerStandingSpeedX * ev.dir * ev.dt;
-      } else {
-        this.state.posX += Balance.playerCrowlingSpeedX * ev.dir * ev.dt;
-      }
-      this.state.posX = clamp(
-        this.state.posX,
-        Balance.playerMinX,
-        Balance.playerMaxX
-      );
+      dir = ev.dir;
     }
+
+    if (this.state.standing) {
+      this.state.posX += Balance.playerStandingSpeedX * dir * dt;
+    } else {
+      this.state.posX += Balance.playerCrowlingSpeedX * dir * dt;
+    }
+    this.state.posX = clamp(
+      this.state.posX,
+      Balance.playerMinX,
+      Balance.playerMaxX
+    );
 
     this.state.fire = "";
     while (this.fireEvents.length > 0) {

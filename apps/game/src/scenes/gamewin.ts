@@ -15,12 +15,12 @@ export class GameWin implements IScene {
     const theme = themes[networkState.playerTheme];
     this.container.addChild(theme.winScreen);
     this.timer.reset();
-    this.container.on("mousedown", () => {
+    this.container.on("pointerdown", () => {
       sceneManager.set("title");
     });
   }
   exit(): void {
-    this.container.off("mousedown");
+    this.container.off("pointerdown");
     this.container.removeChildren();
   }
   update(dt: number): void {

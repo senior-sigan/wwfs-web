@@ -101,7 +101,7 @@ class GameUpdater implements IUpdateable {
     );
 
     this.container.eventMode = "static";
-    this.container.on("mousedown", (ev) => {
+    this.container.on("pointerdown", (ev) => {
       this.player.onShoot({ x: ev.x, y: ev.y });
     });
   }
@@ -109,7 +109,6 @@ class GameUpdater implements IUpdateable {
   update(dt: number): void {
     networkState.poll((ev) => {
       if (ev.ev === "update") {
-        // console.log(ev.state.players[0].fire, ev.state.players[1].fire);
         ev.state.players.forEach((remotePlayer) => {
           if (remotePlayer.pid === ev.me) {
             this.player.onUpdate(remotePlayer);
@@ -144,6 +143,6 @@ class GameUpdater implements IUpdateable {
   }
 
   exit() {
-    this.container.off("mousedown");
+    this.container.off("pointerdown");
   }
 }

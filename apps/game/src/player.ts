@@ -7,7 +7,7 @@ import { UI } from "./consts";
 import "@pixi/events";
 import { sound } from "@pixi/sound";
 import { networkState } from "./networking";
-import { PlayerData } from "shared";
+import { Balance, PlayerData } from "shared";
 
 export interface PlayerState {
   remote: PlayerData;
@@ -16,7 +16,7 @@ export interface PlayerState {
 export class Player implements IUpdateable, PlayerState {
   sprites: Array<Sprite>;
 
-  speedX = 600;
+  private readonly speedX = Balance.playerStandingSpeedX * 2;
 
   shoot = false;
   standing = true;
@@ -75,7 +75,7 @@ export class Player implements IUpdateable, PlayerState {
     }
 
     let standing = true;
-    let dir = 0;
+    let dir: 0 | -1 | 1 = 0;
 
     if (inputs.isPressed("KeyS")) {
       standing = false;

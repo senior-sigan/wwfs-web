@@ -2,7 +2,7 @@ import { z } from "zod";
 
 const MoveEvent = z.object({
   ev: z.literal("move"),
-  dir: z.number(),
+  dir: z.union([z.literal(0), z.literal(-1), z.literal(1)]),
   standing: z.boolean(),
   dt: z.number(),
 });
